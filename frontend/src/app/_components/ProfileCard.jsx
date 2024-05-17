@@ -69,8 +69,8 @@ const ProfileCard = ({ member }) => {
             </div>
           </Button>
         </MenuHandler>
-        <MenuList className="z-40 p-1">
-          <MenuItem className="group flex items-center gap-3 rounded hover:bg-gray-500/10">
+        <MenuList className="z-40 px-3 py-4 bg-white">
+          <MenuItem className="group flex items-center font-bold gap-3 rounded hover:bg-gray-500/10">
             <Typography as="span" variant="small" color="gray">
               {member?.name}
             </Typography>
@@ -81,19 +81,17 @@ const ProfileCard = ({ member }) => {
             </Typography>
           </MenuItem>
           <MenuItem
-            className="group flex items-center gap-3 rounded hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+            className="group flex items-center justify-center gap-3 rounded hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
             onClick={handleLogOut}
           >
             {createElement(FaPowerOff, {
               strokeWidth: 2,
-              className: `h-4 w-4 mt-2 mx-1 ${"text-red-500 group-hover:text-red-700 "} 
-                      group-transition ease-in duration-300
-                      `,
+              className: `h-4 w-4 text-red-500 group-hover:text-red-700 group-transition ease-in duration-300`,
             })}
             <Typography
               as="span"
               variant="small"
-              className={`group-transition ease-in duration-300 font-normal mt-2 text-red-500 group-hover:text-red-700`}
+              className={`group-transition ease-in duration-300 font-normal text-red-500 group-hover:text-red-700`}
             >
               Sign Out
             </Typography>
