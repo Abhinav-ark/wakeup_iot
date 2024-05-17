@@ -1,13 +1,14 @@
-import React from 'react'
+"use client";
 import Image from 'next/image'
+import React, { useContext, useEffect } from "react";
 
-const crypto = require("crypto");
+// const crypto = require("crypto");
 
-const Navbar = () => {
+const Navbar = ({user}) => {
 
-  const genSHA256 = (email) => {
-    return crypto.createHash("sha256").update(email).digest("hex");
-  };
+  // const genSHA256 = (email) => {
+  //   return crypto.createHash("sha256").update(email).digest("hex");
+  // };
   const email = "abhinavramki2@gmail.com"
   
   return (
@@ -16,7 +17,7 @@ const Navbar = () => {
         <h1 className='text-2xl font-bold'>Logo</h1>
       </div>
       <div className='w-12 h-12 justify-center items-center mx-10'>
-        <Image
+        {/* <Image
           className="rounded-full border-2 border-black"
           alt="Travis Howard"
           src={
@@ -26,7 +27,15 @@ const Navbar = () => {
           }
           width={65}
           height={20}
+        /> */}
+        <Image
+          className="rounded-full border-2 border-black"
+          alt={user?.name}
+          src={user?.picture}
+          width={65}
+          height={20}
         />
+        {/* <img src={user?.picture} alt={user?.name} /> */}
       </div>
     </div>
   )
