@@ -3,6 +3,9 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/_context";
+import { FcGoogle } from "react-icons/fc";
+import { FaClock } from "react-icons/fa6";
+import '../app/page.css';
 
 axios.defaults.withCredentials = true;
 
@@ -51,14 +54,44 @@ const Page = () => {
   }, [checkLoginState, loggedIn]);
 
   return (
-    <div>
-      <button className="btn" onClick={handleLogin}>
-        Login
-      </button>
-      <h3>Dashboard</h3>
-      <button className="btn" onClick={handleLogout}>
-        Logout
-      </button>
+    <div className="relative flex items-center justify-center min-h-screen bg-static">
+      <div className="stars">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        {/* Add more spans for more stars */}
+      </div>
+      <div className="bg-white shadow-xl border-[0.5px] border-gray  rounded-xl p-8 flex flex-col items-center w-96 h-96 relative z-10">
+        <div className="flex items-center space-x-2 mt-10 mb-2">
+          <FaClock size={45} />
+          <span className="text-6xl font-semibold text-shadow-lg">WakeUp</span>
+        </div>
+        <span className="text-lg text-gray-600 mb-6">Experience the intelligent wake-up</span>
+        <button
+          className="bg-black text-white py-2 px-4 rounded-full flex items-center space-x-2 hover:bg-gray-800 hover:shadow-lg mt-7"
+          onClick={handleLogin}
+        >
+          <FcGoogle />
+          <span>Login with Google</span>
+        </button>
+      </div>
     </div>
   );
 };
