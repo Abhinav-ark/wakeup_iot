@@ -1,6 +1,7 @@
 "use client";
 import Image from 'next/image'
 import React, { useContext, useEffect } from "react";
+import {ProfileCard} from '@/app/_components';
 
 // const crypto = require("crypto");
 
@@ -16,7 +17,7 @@ const Navbar = ({user}) => {
       <div>
         <h1 className='text-2xl font-bold'>Logo</h1>
       </div>
-      <div className='w-12 h-12 justify-center items-center mx-10'>
+      <div className='w-14 h-14 justify-center items-center mx-10'>
         {/* <Image
           className="rounded-full border-2 border-black"
           alt="Travis Howard"
@@ -28,13 +29,7 @@ const Navbar = ({user}) => {
           width={65}
           height={20}
         /> */}
-        <Image
-          className="rounded-full border-2 border-black"
-          alt={user?.name}
-          src={user?.picture}
-          width={65}
-          height={20}
-        />
+        <ProfileCard member={user} />
         {/* <img src={user?.picture} alt={user?.name} /> */}
       </div>
     </div>
