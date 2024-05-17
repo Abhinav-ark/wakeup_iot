@@ -35,7 +35,7 @@ const AnotherPage = () => {
 
   return (
     <div>
-      <Navbar user={user}/>
+      <Navbar user={user} />
       <h3>Another Page</h3>
       {loggedIn ? (
         <div>

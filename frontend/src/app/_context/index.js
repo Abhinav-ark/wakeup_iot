@@ -1,7 +1,6 @@
 "use client";
-import React, { createContext, useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import React, { createContext, useState, useCallback, useEffect } from "react";
+import axios from "axios";
 
 axios.defaults.withCredentials = true;
 

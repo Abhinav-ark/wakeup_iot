@@ -11,7 +11,7 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 const Page = () => {
   const { user, loggedIn, checkLoginState } = useContext(AuthContext);
   const router = useRouter();
-  
+
   const handleLogout = async () => {
     try {
       await axios.post(`${serverUrl}/auth/logout`);
@@ -37,7 +37,9 @@ const Page = () => {
     if (loggedIn === false) {
       (async () => {
         try {
-          const res = await axios.get(`${serverUrl}/auth/token${window.location.search}`);
+          const res = await axios.get(
+            `${serverUrl}/auth/token${window.location.search}`
+          );
           console.log("response: ", res);
           checkLoginState();
           router.replace("/dashboard");
@@ -57,15 +59,6 @@ const Page = () => {
       <button className="btn" onClick={handleLogout}>
         Logout
       </button>
-      
-      {/* <div>
-        {posts.map((post, idx) => (
-          <div key={idx}>
-            <h5>{post?.title}</h5>
-            <p>{post?.body}</p>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 };
