@@ -10,22 +10,43 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 const AnotherPage = () => {
   const { user, loggedIn, checkLoginState } = useContext(AuthContext);
 
+  function formatDateToIST(date) {
+    const options = {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+  
+    return new Intl.DateTimeFormat('en-IN', options).format(date);
+  }
+
+  function formatTimeToIST(date) {
+    const options = {
+      timeZone: 'Asia/Kolkata',
+      hour: 'numeric',
+      minute: 'numeric',
+    };
+  
+    return new Intl.DateTimeFormat('en-IN', options).format(date);
+  }
+
   useEffect(() => {
     if (loggedIn === null) {
       checkLoginState();
     }
   }, [loggedIn, checkLoginState]);
 
-  const [posts, setPosts] = useState([]);
+  const [alarm, setAlarms] = useState([]);
 
   useEffect(() => {
     if (loggedIn === true) {
       (async () => {
         try {
           const {
-            data: { posts },
-          } = await axios.get(`${serverUrl}/user/posts`);
-          setPosts(posts);
+            data: { alarms },
+          } = await axios.get(`${serverUrl}/user/alarms`);
+          setAlarms(alarms);
         } catch (err) {
           console.error(err);
         }
@@ -36,17 +57,18 @@ const AnotherPage = () => {
   return (
     <div>
       <Navbar user={user} />
-      <h3>Another Page</h3>
       {loggedIn ? (
         <div>
-          <h4>{user?.name}</h4>
-          <p>{user?.email}</p>
-          <img src={user?.picture} alt={user?.name} />
-          <div>
-            {posts.map((post, idx) => (
-              <div key={idx}>
-                <h5>{post?.title}</h5>
-                <p>{post?.body}</p>
+          <div className="justify-center items-center flex flex-col space-y-2 py-10">
+            <h1 className="font-bold text-3xl">Welcome {user?.name}</h1>
+            <h2 className="text-md">Start your day right with our wake-up routine tracker!</h2>
+          </div>
+          <div className="flex flex-row space-x-10 items-center justify-center">
+            {alarm.map((alarm, idx) => (
+              <div key={idx} className="border border-black p-5 rounded-xl">
+                <h5>{formatDateToIST(alarm?.time)}</h5>
+                <h6>{formatTimeToIST(alarm?.time)}</h6>
+                <p>{alarm?.desc}</p>
               </div>
             ))}
           </div>

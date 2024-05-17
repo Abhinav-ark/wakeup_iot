@@ -14,8 +14,7 @@ const config = {
   redirectUrl: process.env.REDIRECT_URL,
   clientUrl: process.env.CLIENT_URL,
   tokenSecret: process.env.TOKEN_SECRET,
-  tokenExpiration: 36000,
-  postUrl: 'https://jsonplaceholder.typicode.com/posts',
+  tokenExpiration: 36000
 }
 
 const authParams = queryString.stringify({
@@ -47,8 +46,8 @@ app.use(
     }),
   )
   
-  // Parse Cookie
-  app.use(cookieParser())
+// Parse Cookie
+app.use(cookieParser())
   
   // Verify auth
 const auth = (req, res, next) => {
@@ -119,10 +118,10 @@ app.post('/auth/logout', (_, res) => {
     res.clearCookie('token').json({ message: 'Logged out' })
 })
 
-app.get('/user/posts', auth, async (_, res) => {
+app.get('/user/alarms', auth, async (_, res) => {
     try {
-      const { data } = await axios.get(config.postUrl)
-      res.json({ posts: data?.slice(0, 5) })
+      const data = [{alarmId:1, time: Date.now(), desc: 'Alarm 1'}, {alarmId:2, time: Date.now(), desc: 'Alarm 2'}]
+      res.json({alarms: data})
     } catch (err) {
       console.error('Error: ', err)
     }

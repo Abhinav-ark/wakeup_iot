@@ -52,8 +52,8 @@ const ProfileCard = ({ member }) => {
                 className="rounded-full"
                 alt={member?.name}
                 src={member?.picture}
-                width={100}
-                height={100}
+                width={50}
+                height={50}
               />
             </div>
             <div className="cursor-pointer">
