@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "@/app/_context";
 import { Navbar } from "@/app/_components";
+import AlarmCard from "@/app/_components/AlarmCard";
 
 axios.defaults.withCredentials = true;
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -63,13 +64,14 @@ const AnotherPage = () => {
             <h1 className="font-bold text-3xl">Welcome {user?.name}</h1>
             <h2 className="text-md">Start your day right with our wake-up routine tracker!</h2>
           </div>
-          <div className="flex flex-row space-x-10 items-center justify-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 max-w-[95vw] mx-auto">
             {alarm.map((alarm, idx) => (
-              <div key={idx} className="border border-black p-5 rounded-xl">
-                <h5>{formatDateToIST(alarm?.time)}</h5>
-                <h6>{formatTimeToIST(alarm?.time)}</h6>
-                <p>{alarm?.desc}</p>
-              </div>
+              <AlarmCard
+                key={idx}
+                time={formatTimeToIST(alarm?.time)}
+                desc={alarm?.desc}
+                date={formatDateToIST(alarm?.time)}
+              />
             ))}
           </div>
         </div>

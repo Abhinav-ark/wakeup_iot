@@ -1,0 +1,10 @@
+/* Custom utility class for wrapping text without breaking words */
+.wrap-text {
+    display: block;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 300px; /* Adjust the width as needed to control text wrapping */
+  }
+  

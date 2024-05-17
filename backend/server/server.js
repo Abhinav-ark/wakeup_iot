@@ -120,7 +120,7 @@ app.post('/auth/logout', (_, res) => {
 
 app.get('/user/alarms', auth, async (_, res) => {
     try {
-      const data = [{alarmId:1, time: Date.now(), desc: 'Alarm 1'}, {alarmId:2, time: Date.now(), desc: 'Alarm 2'}]
+      const data = [{alarmId:1, time: Date.now(), desc: 'Alarm 1'}, {alarmId:2, time: Date.now(), desc: 'Alarm 2'} ,{alarmId:3, time: Date.now(), desc: 'Meeting with SwamiJi in AB3'} , {alarmId:4, time: Date.now(), desc: 'Meeting with SwamiJi in AB3 summa epdi uruka nalla irukoiya ok varen'}]
       res.json({alarms: data})
     } catch (err) {
       console.error('Error: ', err)
