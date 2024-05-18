@@ -4,8 +4,10 @@ import { MenuItem, FormControl, Select } from "@mui/material";
 
 const Graph = ({
   title,
-  data,
-  labels,
+  dayData,
+  dayLabels,
+  weekData,
+  weekLabels,
   unit,
   gap,
   options,
@@ -17,6 +19,9 @@ const Graph = ({
   const handlePeriodChange = (event) => {
     setSelectedOption(event.target.value);
   };
+
+  const data = selectedOption === "Day" ? dayData : weekData;
+  const labels = selectedOption === "Day" ? dayLabels : weekLabels;
 
   return (
     <div className="bg-white shadow-md border-[0.5px] border-gray rounded-3xl p-4 flex flex-col space-y-4 mb-20">
@@ -54,20 +59,20 @@ const Graph = ({
         </div>
       )}
       <div className="md:h-[250px] md:w-[600px] h-96 w-96 items-center justify-center">
-      <BarChart
-        yAxis={[{ label: unit }]}
-        xAxis={[
-          {
-            scaleType: "band",
-            data: labels,
-            categoryGapRatio: gap,
-            tickPlacement: "middle",
-          },
-        ]}
-        series={[{ data: data, color: "#22abe6" }]}
-        grid={{ horizontal: true }}
-        borderRadius={20}
-      />
+        <BarChart
+          yAxis={[{ label: unit }]}
+          xAxis={[
+            {
+              scaleType: "band",
+              data: labels,
+              categoryGapRatio: gap,
+              tickPlacement: "middle",
+            },
+          ]}
+          series={[{ data: data, color: "#22abe6" }]}
+          grid={{ horizontal: true }}
+          borderRadius={20}
+        />
       </div>
     </div>
   );

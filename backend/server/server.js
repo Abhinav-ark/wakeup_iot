@@ -1,3 +1,4 @@
+
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
@@ -178,11 +179,24 @@ app.get('/api/user/sleep', auth,async (req, res) => {
       secret:true
     }
   }
+  else if (req.body.userEmail === 'sksseervi@gmail.com'){
+    data = {
+      totalSleepTime:"5h 36m",
+      deepSleepTime:"4h 21m",
+      outOfBedDayX:["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      outOfBedDayY:[1, 1, 4, 0, 2, 1],
+      outOfBedWeekX:["Week 1", "Week 2", "Week 3"],
+      outOfBedWeekY:[8, 5, 9],
+      sleepQualityX:["April","May"],
+      sleepQualityY:[7.8,7.2],
+      secret:true
+    }
+  }
     
   res.json(data)    
 })
 
-app.get('/api/user/weight', async (req, res) => {
+app.get('/api/user/weight',auth, async (req, res) => {
     let data = {
       weightCurrent: 0,
       weightPrevious: 0,
@@ -213,6 +227,17 @@ app.get('/api/user/weight', async (req, res) => {
         secret:true
       }
     }
+    else if (req.body.userEmail === 'sksseervi@gmail.com'){
+      data = {
+        weightCurrent: 56.1,
+        weightPrevious: 55.8,
+        weekX:["Apr-Week3","Apr-Week4","May-Week1","May-Week2","May-Week3"],
+        weekY:[55.9,56.1,56.0,56.2,56.1],
+        monthX:["April","May"],
+        monthY:[56.0,56.1],
+        secret:true
+      }
+    }
     
     res.json(data)    
 })
@@ -233,7 +258,25 @@ app.get('/api/user/alarms', auth, async (req, res) => {
         desc: alarm.alarmDescription
       }));
 
-      const data2 = {wakeUpTime: "10s", wakeUpScore: "8/8", sleepTime: "5h 23m"}
+      let data2 = {
+        wakeUpTime: null,
+        wakeUpScore: null,
+        sleepTime: null
+      }
+      if (req.body.userEmail === 'abhinavramki2@gmail.com') {
+        data2 = {
+          wakeUpTime: "10s",
+          wakeUpScore: "8/8",
+          sleepTime: "5h 23m"
+        }
+      } else if (req.body.userEmail === 'hariharan.14107@gmail.com'){
+        data2 = {
+          wakeUpTime: "23s",
+          wakeUpScore: "7/8",
+          sleepTime: "7h 36m"
+        }
+      }
+      
 
       res.json({alarms: formattedAlarms, stats: data2})
     } catch (err) {

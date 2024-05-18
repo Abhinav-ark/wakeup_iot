@@ -7,7 +7,7 @@ import { AlarmCard } from "@/app/_components";
 import { StatCard } from "@/app/_components";
 import { AddAlarm } from "@/app/_components";
 import { EditAlarm } from "@/app/_components";
-import { DeleteAlarm } from "@/app/_components"; // Import DeleteAlarm
+import { DeleteAlarm } from "@/app/_components";
 import { IoMdAlarm } from "react-icons/io";
 import { FaDatabase } from "react-icons/fa";
 import { FaBed } from "react-icons/fa";
@@ -27,26 +27,40 @@ const Dashboard = () => {
   const [addAlarmModal, setAddAlarmModal] = useState(false);
   const [editAlarmModal, setEditAlarmModal] = useState(false);
   const [deleteAlarmModal, setDeleteAlarmModal] = useState(false);
-  const [selectedAlarm, setSelectedAlarm] = useState(null); // State to hold the selected alarm
+  const [selectedAlarm, setSelectedAlarm] = useState(null);
 
-  function formatDateToIST(date) {
+  const updateAlarmsState = (updatedAlarm) => {
+    setAlarms((prevAlarms) =>
+      prevAlarms.map((alarm) =>
+        alarm.alarmId === updatedAlarm.alarmId ? updatedAlarm : alarm
+      )
+    );
+  };
+
+  function formatDateToIST(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date)) {
+      return "Invalid Date";
+    }
     const options = {
       timeZone: 'Asia/Kolkata',
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     };
-
     return new Intl.DateTimeFormat('en-IN', options).format(date);
   }
 
-  function formatTimeToIST(date) {
+  function formatTimeToIST(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date)) {
+      return "Invalid Time";
+    }
     const options = {
       timeZone: 'Asia/Kolkata',
       hour: 'numeric',
       minute: 'numeric',
     };
-
     return new Intl.DateTimeFormat('en-IN', options).format(date);
   }
 
@@ -65,7 +79,9 @@ const Dashboard = () => {
       if (response.status === 200) {
         const { alarms, stats } = response.data;
         setAlarms(alarms);
-        setStats(stats);
+        if (!(stats.wakeUpTime === null && stats.wakeUpScore === null && stats.sleepTime === null)) {
+          setStats(stats);
+        }
       } else if (response.status === 401) {
         console.error('Unauthorized access. Redirecting to login...');
         window.location.href = '/';
@@ -120,8 +136,8 @@ const Dashboard = () => {
                 time={formatTimeToIST(alarm?.time)}
                 desc={alarm?.desc}
                 date={formatDateToIST(alarm?.time)}
-                onEdit={() => handleEdit(alarm)} // Pass the alarm to handleEdit
-                onDelete={() => handleDelete(alarm)} // Pass the alarm to handleDelete
+                onEdit={() => handleEdit(alarm)}
+                onDelete={() => handleDelete(alarm)}
               />
             ))}
           </div>
@@ -136,6 +152,8 @@ const Dashboard = () => {
               setErrorOpen={setErrorOpen}
               setSuccessOpen={setSuccessOpen}
               alarm={selectedAlarm}
+              setSelectedAlarm={setSelectedAlarm}
+              updateAlarmsState={updateAlarmsState}
             />
           )}
           {selectedAlarm && (

@@ -7,7 +7,9 @@ const EditAlarm = ({
   editAlarmModal,
   setSuccessOpen,
   setErrorOpen,
+  setSelectedAlarm, // Ensure this prop is received
   alarm,
+  updateAlarmsState, // New prop to update alarms state
 }) => {
   const [editedAlarm, setEditedAlarm] = useState({
     alarmId: alarm.alarmId,
@@ -26,12 +28,17 @@ const EditAlarm = ({
       const response = await axios.post(`${serverUrl}/user/editAlarm`, editedAlarm);
       if (response.status === 200) {
         setSuccessOpen(true);
+        setTimeout(() => setSuccessOpen(false), 2000); 
         setEditAlarmModal(false);
+        setSelectedAlarm(null); // Use the prop correctly
+        updateAlarmsState(editedAlarm); // Update alarms state
       } else {
         setErrorOpen(true);
+        setTimeout(() => setErrorOpen(false), 2000); 
       }
     } catch (err) {
       setErrorOpen(true);
+      setTimeout(() => setErrorOpen(false), 2000); 
     }
   };
 
@@ -45,7 +52,7 @@ const EditAlarm = ({
         <div className="relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg">
           <div className="flex justify-end">
             <button
-              onClick={() => setEditAlarmModal(false)}
+              onClick={() => {setEditAlarmModal(false); setSelectedAlarm(null);}}
               className="p-2 text-gray-400 rounded-2xl hover:bg-gray-100"
             >
               <svg

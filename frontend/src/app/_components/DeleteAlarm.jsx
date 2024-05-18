@@ -14,18 +14,21 @@ const DeleteAlarm = ({
 }) => {
   const deleteAlarm = async () => {
     try {
-      const response = await axios.delete(
-        `${serverUrl}/user/alarms/${alarm._id}`
+      const response = await axios.post(
+        `${serverUrl}/user/deleteAlarm` , { alarmId: alarm.alarmId }
       );
       if (response.status === 200) {
         setSuccessOpen(true);
+        setTimeout(() => setSuccessOpen(false), 2000); 
         setDeleteAlarmModal(false);
-        fetchAlarms(); // Refresh alarms after deletion
+        fetchAlarms(); 
       } else {
         setErrorOpen(true);
+        setTimeout(() => setErrorOpen(false), 2000);
       }
     } catch (error) {
       setErrorOpen(true);
+      setTimeout(() => setErrorOpen(false), 2000);
     }
   };
 

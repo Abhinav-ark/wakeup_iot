@@ -20,15 +20,15 @@ const AddAlarm = ({ setAddAlarmModal, addAlarmModal, setSuccessOpen, setErrorOpe
 
       if (response.status === 200) {
         setSuccessOpen(true);
-        setTimeout(() => setSuccessOpen(false), 3000); // Hide after 3 seconds
+        setTimeout(() => setSuccessOpen(false), 2000); 
         setAddAlarmModal(false);
       } else {
         setErrorOpen(true);
-        setTimeout(() => setErrorOpen(false), 3000); // Hide after 3 seconds
+        setTimeout(() => setErrorOpen(false), 2000);
       }
     } catch (error) {
       setErrorOpen(true);
-      setTimeout(() => setErrorOpen(false), 3000); // Hide after 3 seconds
+      setTimeout(() => setErrorOpen(false), 2000);
       console.error('Error:', error);
     }
   };

@@ -2,12 +2,15 @@ import React from 'react';
 import { LineChart } from '@mui/x-charts';
 import { MenuItem, FormControl, Select } from '@mui/material';
 
-const GraphWeight = ({ title, data, labels, unit, gap , options, defaultOption, badgeText, additionalInfo }) => {
+const GraphWeight = ({ title, monthData, monthLabels, weekData, weekLabels, unit, options, defaultOption, badgeText, additionalInfo }) => {
   const [selectedOption, setSelectedOption] = React.useState(defaultOption);
 
   const handlePeriodChange = (event) => {
     setSelectedOption(event.target.value);
   };
+
+  const data = selectedOption === "Month" ? monthData : weekData;
+  const labels = selectedOption === "Month" ? monthLabels : weekLabels;
 
   return (
     <div className="bg-white shadow-md border-[0.5px] border-gray rounded-3xl p-5 flex flex-col space-y-9 w-full">
@@ -40,26 +43,25 @@ const GraphWeight = ({ title, data, labels, unit, gap , options, defaultOption, 
         <div className="bg-black text-white px-4 py-1 rounded-full text-sm">{badgeText}</div>
         <div className="text-gray-500 text-sm">{additionalInfo}</div>
       </div>
-      <div className="md:h-[390px] md:w-[750px] h-96 w-96 items-center justify-center">
-      <LineChart
-        yAxis={[{ label: unit }]}
-        xAxis={[
+      <div className="md:h-[390px] md:w-[750px] h-96 w-96 items-center justify-center custom-y-padding-bottom">
+        <LineChart
+          yAxis={[{ label: unit, labelStyle: { padding: '0 10px' }, position: 'left' }]}
+          xAxis={[
             {
               scaleType: "band",
               data: labels,
-              categoryGapRatio: gap,
               tickPlacement: "middle",
             },
           ]}
-        series={[
-          {
-            data: data,
-            color: '#22abe6',
-          },
-        ]}
-        grid={{ horizontal: true }}
-        borderRadius={20}
-      />
+          series={[
+            {
+              data: data,
+              color: '#22abe6',
+            },
+          ]}
+          grid={{ horizontal: true }}
+          borderRadius={20}
+        />
       </div>
     </div>
   );

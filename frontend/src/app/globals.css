@@ -57,6 +57,10 @@
   background-color: white;
 }
 
+.custom-y-padding-bottom .MuiChartsAxis-directionY .MuiChartsAxis-label {
+  transform: translateX(-12px) !important;
+}
+
 @keyframes twinkle {
   0%, 100% { opacity: 0.2; }
   50% { opacity: 1; }
