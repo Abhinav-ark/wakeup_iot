@@ -140,31 +140,80 @@ app.post('/api/auth/logout', (_, res) => {
 })
 
 
-app.get('/api/user/sleep', async (req, res) => {
-    const data = {
+app.get('/api/user/sleep', auth,async (req, res) => {
+  let data = {
+      totalSleepTime:"",
+      deepSleepTime:"",
+      outOfBedDayX:[],
+      outOfBedDayY:[],
+      outOfBedWeekX:[],
+      outOfBedWeekY:[],
+      sleepQualityX:[],
+      sleepQualityY:[],
+      secret:false
+  }
+  if (req.body.userEmail === 'abhinavramki2@gmail.com') {
+    data = {
       totalSleepTime:"4h 18m",
-      deepSleepTime:"2h 30m",
+      deepSleepTime:"2h 26m",
       outOfBedDayX:["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       outOfBedDayY:[2, 1, 3, 1, 0, 0],
       outOfBedWeekX:["Week 1", "Week 2", "Week 3"],
       outOfBedWeekY:[2, 8, 7],
       sleepQualityX:["April","May"],
-      sleepQualityY:[8.0,6.2],
+      sleepQualityY:[8.1,6.2],
       secret:true
     }
-    res.json(data)    
+  }
+  else if (req.body.userEmail === 'hariharan.14107@gmail.com'){
+    data = {
+      totalSleepTime:"5h 36m",
+      deepSleepTime:"4h 21m",
+      outOfBedDayX:["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      outOfBedDayY:[1, 1, 4, 0, 2, 1],
+      outOfBedWeekX:["Week 1", "Week 2", "Week 3"],
+      outOfBedWeekY:[8, 5, 9],
+      sleepQualityX:["April","May"],
+      sleepQualityY:[7.8,7.2],
+      secret:true
+    }
+  }
+    
+  res.json(data)    
 })
 
 app.get('/api/user/weight', async (req, res) => {
-    const data = {
-      weightCurrent: 52.1,
-      weightPrevious: 58.8,
-      weekX:["Apr-Week3","Apr-Week4","May-Week1","May-Week2","May-Week3"],
-      weekY:[53.9,53.8,52.7,52.7,52.1],
-      monthX:["April","May"],
-      monthY:[53.85,52.5],
-      secret:true
+    let data = {
+      weightCurrent: 0,
+      weightPrevious: 0,
+      weekX:[],
+      weekY:[],
+      monthX:[],
+      monthY:[],
+      secret:false
     }
+    if (req.body.userEmail === 'abhinavramki2@gmail.com') {
+      data = {
+        weightCurrent: 52.1,
+        weightPrevious: 53.8,
+        weekX:["Apr-Week3","Apr-Week4","May-Week1","May-Week2","May-Week3"],
+        weekY:[53.9,53.8,52.7,52.7,52.1],
+        monthX:["April","May"],
+        monthY:[53.85,52.5],
+        secret:true
+      }
+    } else if (req.body.userEmail === 'hariharan.14107@gmail.com'){
+      data = {
+        weightCurrent: 56.1,
+        weightPrevious: 55.8,
+        weekX:["Apr-Week3","Apr-Week4","May-Week1","May-Week2","May-Week3"],
+        weekY:[55.9,56.1,56.0,56.2,56.1],
+        monthX:["April","May"],
+        monthY:[56.0,56.1],
+        secret:true
+      }
+    }
+    
     res.json(data)    
 })
 
