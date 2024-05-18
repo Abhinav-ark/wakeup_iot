@@ -4,8 +4,8 @@ import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/_context";
-import SleepCard from '@/app/_components/SleepCard'; // Adjust the path as necessary
-import Graph from '@/app/_components/Graph'; // Adjust the path as necessary
+import SleepCard from '@/app/_components/SleepCard';
+import Graph from '@/app/_components/Graph';
 
 axios.defaults.withCredentials = true;
 
@@ -57,6 +57,10 @@ const Page = () => {
             gap={0.7}
             options={['Month']}
             defaultOption="Month"
+            additionalInfo={{
+              text: "Good",
+              badge: "Avg. 7.4h / month"
+            }}
           />
         </div>
       </div>

@@ -77,7 +77,7 @@ const Page = () => {
         <span></span>
         {/* Add more spans for more stars */}
       </div>
-      <div className="bg-white shadow-xl border-[0.5px] border-gray  rounded-xl p-8 flex flex-col items-center w-96 h-96 relative z-10">
+      <div className="bg-white shadow-xl border-[0.5px] border-gray  rounded-3xl p-8 flex flex-col items-center min-w-80 w-1/3 h-96 relative z-10">
         <div className="flex items-center space-x-2 mt-10 mb-2">
           <FaClock size={45} />
           <span className="text-6xl font-semibold text-shadow-lg">WakeUp</span>
@@ -86,7 +86,7 @@ const Page = () => {
           Experience the intelligent wake-up
         </span>
         <button
-          className="bg-black text-white py-2 px-4 rounded-full flex items-center space-x-2 hover:bg-gray-800 hover:shadow-lg mt-7"
+          className="bg-black text-white py-5 px-10 rounded-full flex items-center space-x-2 hover:bg-gray-800 hover:shadow-lg mt-7"
           onClick={handleLogin}
         >
           <FcGoogle />
