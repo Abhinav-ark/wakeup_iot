@@ -139,6 +139,36 @@ app.post('/api/auth/logout', (_, res) => {
     res.clearCookie('token').json({ message: 'Logged out' })
 })
 
+
+app.get('/api/user/sleep', async (req, res) => {
+    const data = {
+      totalSleepTime:"4h 18m",
+      deepSleepTime:"2h 30m",
+      outOfBedDayX:["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      outOfBedDayY:[2, 1, 3, 1, 0, 0],
+      outOfBedWeekX:["Week 1", "Week 2", "Week 3"],
+      outOfBedWeekY:[2, 8, 7],
+      sleepQualityX:["April","May"],
+      sleepQualityY:[8.0,6.2],
+      secret:true
+    }
+    res.json(data)    
+})
+
+app.get('/api/user/weight', async (req, res) => {
+    const data = {
+      weightCurrent: 52.1,
+      weightPrevious: 58.8,
+      weekX:["Apr-Week3","Apr-Week4","May-Week1","May-Week2","May-Week3"],
+      weekY:[53.9,53.8,52.7,52.7,52.1],
+      monthX:["April","May"],
+      monthY:[53.85,52.5],
+      secret:true
+    }
+    res.json(data)    
+})
+
+
 app.get('/api/user/alarms', auth, async (req, res) => {
     let db_connection = await DB.promise().getConnection();
     try {
