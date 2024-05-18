@@ -158,6 +158,7 @@ app.get('/api/user/alarms', auth, async (req, res) => {
       res.json({alarms: formattedAlarms, stats: data2})
     } catch (err) {
       console.error('Error: ', err)
+      res.status(500).send({"message":"Error fetching alarms"})
     } finally {
       db_connection.release();
     }
@@ -168,17 +169,52 @@ app.post('/api/user/createAlarm', auth, async (req, res) => {
   try {
     
     await db_connection.query(`LOCK TABLES alarms WRITE`);
-    console.log(req.body.time, req.body.desc);
     await db_connection.query(`INSERT INTO alarms (userEmail, alarmTime, alarmDescription) VALUES (?, ?, ?)`, [req.body.userEmail, new Date(req.body.time), req.body.desc]);
     await db_connection.query(`UNLOCK TABLES`);
 
     res.status(200).send({"message":"Alarm created Successfully"})
   } catch (err) {
     console.error('Error: ', err)
+    res.status(500).send({"message":"Error creating alarm"})
   } finally {
     db_connection.release();
   }
 })
+
+app.post('/api/user/editAlarm', auth, async (req, res) => {
+  let db_connection = await DB.promise().getConnection();
+  try {
+    // req.body.userEmail = 'shivajivayilajilebi@gmail.com'
+    await db_connection.query(`LOCK TABLES alarms WRITE`);
+    await db_connection.query(`UPDATE alarms SET alarmTime = ?, alarmDescription = ? WHERE alarmId = ? AND userEmail = ?`, [Date(req.body.time), req.body.desc, req.body.alarmId, req.body.userEmail]);
+    await db_connection.query(`UNLOCK TABLES`);
+
+    res.status(200).send({"message":"Alarm Edited Successfully"})
+  } catch (err) {
+    console.error('Error: ', err)
+    res.status(500).send({"message":"Error Editing alarm"})
+  } finally {
+    db_connection.release();
+  }
+})
+
+app.post('/api/user/deleteAlarm', auth, async (req, res) => {
+  let db_connection = await DB.promise().getConnection();
+  try {
+    //req.body.userEmail = 'shivajivayilajilebi@gmail.com'
+    await db_connection.query(`LOCK TABLES alarms WRITE`);
+    await db_connection.query(`DELETE FROM alarms WHERE alarmId = ? AND userEmail = ?`, [req.body.alarmId, req.body.userEmail]);
+    await db_connection.query(`UNLOCK TABLES`);
+
+    res.status(200).send({"message":"Alarm Deleted Successfully"})
+  } catch (err) {
+    console.error('Error: ', err)
+    res.status(500).send({"message":"Error Deleting alarm"})
+  } finally {
+    db_connection.release();
+  }
+}
+)
 
 const PORT = process.env.PORT || 5000
 
