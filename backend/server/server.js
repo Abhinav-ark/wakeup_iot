@@ -213,8 +213,7 @@ app.post('/api/user/deleteAlarm', auth, async (req, res) => {
   } finally {
     db_connection.release();
   }
-}
-)
+})
 
 const PORT = process.env.PORT || 5000
 
