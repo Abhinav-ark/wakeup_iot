@@ -6,6 +6,9 @@ import axios from 'axios'
 import queryString from 'query-string'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser'
+import {WebSocketServer} from 'ws'
+
+// const WebSocketServer = require("ws").Server;
 
 import reInitDatabase from "../schema/reInitDb.js"
 import establishConnection from '../schema/initializeConnection.js'
@@ -294,7 +297,7 @@ app.post('/api/user/createAlarm', auth, async (req, res) => {
     await db_connection.query(`LOCK TABLES alarms WRITE`);
     await db_connection.query(`INSERT INTO alarms (userEmail, alarmTime, alarmDescription) VALUES (?, ?, ?)`, [req.body.userEmail, new Date(req.body.time), req.body.desc]);
     await db_connection.query(`UNLOCK TABLES`);
-
+    await sendMessageToClients();
     res.status(200).send({"message":"Alarm created Successfully"})
   } catch (err) {
     console.error('Error: ', err)
@@ -347,4 +350,51 @@ app.listen(PORT, (err) => {
   } else {
       console.log(`[MESSAGE]: 🚀 Server listening on port ${PORT}`);
   }
+
+
 })
+
+// Example of setting up a WebSocket server
+const wss = new WebSocketServer({ port: 8000 });
+
+wss.on("connection", (ws) => {
+  console.log("New connection established");
+
+  ws.on("message", (message) => {
+    console.log(`Received message: ${message}`);
+    // Echo the message back to the client
+    ws.send(`You said: ${message}`);
+  });
+
+  ws.on("close", () => {
+    console.log("Connection closed");
+  });
+});
+
+console.log("WebSocket server is running on ws://localhost:8000");
+
+const sendMessageToClients = async () => {
+  let formattedAlarms = [];
+  let db_connection = await DB.promise().getConnection();
+    try {
+      
+      await db_connection.query(`LOCK TABLES alarms READ`);
+      const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, ['sksseervi@gmail.com']);
+      await db_connection.query(`UNLOCK TABLES`);
+
+      formattedAlarms = rows.map(alarm => ({
+        time: new Date(alarm.alarmTime).getTime(), 
+      }));
+    } catch (err) {
+      console.error('Error: ', err)
+    } finally {
+      db_connection.release();
+    }
+  wss.clients.forEach((client) => {
+    if (client.readyState === client.OPEN) {
+      client.send(JSON.stringify(formattedAlarms));
+      console.log("Message sent to client" , formattedAlarms);
+    }
+  });
+};
+
