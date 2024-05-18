@@ -125,8 +125,9 @@ app.post('/api/auth/logout', (_, res) => {
 app.get('/api/user/alarms', auth, (req, res) => {
     try {
       console.log('User email: ', req.body.userEmail)
-      const data = [{alarmId:1, time: Date.now(), desc: 'Alarm 1'}, {alarmId:2, time: Date.now(), desc: 'Alarm 2'} ,{alarmId:3, time: Date.now(), desc: 'Meeting with SwamiJi in AB3'} , {alarmId:4, time: Date.now(), desc: 'Meeting with SwamiJi in AB3 summa epdi uruka nalla irukoiya ok varen'}]
-      res.json({alarms: data})
+      const data = [{alarmId:1, time: Date.now(), desc: 'Alarm 1'}, {alarmId:2, time: Date.now(), desc: 'Alarm 2'} ,{alarmId:3, time: Date.now(), desc: 'Meeting with SwamiJi in AB3'} , {alarmId:4, time: Date.now(), desc: 'Cousins Wedding ceremony'}]
+      const data2 = {wakeUpTime: "10s", wakeUpScore: "8/8", sleepTime: "5h 23m"}
+      res.json({alarms: data, stats: data2})
     } catch (err) {
       console.error('Error: ', err)
     }

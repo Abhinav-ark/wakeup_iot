@@ -69,7 +69,7 @@ const ProfileCard = ({ member }) => {
             </div>
           </Button>
         </MenuHandler>
-        <MenuList className="z-40 px-3 py-4 bg-white">
+        <MenuList className="z-40 px-3 py-4 bg-white rounded-xl shadow-lg">
           <MenuItem className="group flex items-center justify-center font-bold gap-3 rounded hover:bg-gray-500/10">
             <Typography as="span" variant="small" color="gray">
               {member?.name}

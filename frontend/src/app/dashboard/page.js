@@ -43,13 +43,15 @@ const Dashboard = () => {
   }, [loggedIn, checkLoginState]);
 
   const [alarm, setAlarms] = useState([]);
+  const [stats, setStats] = useState({"wakeUpTime":"-.-","wakeUpScore":"-.-","sleepTime":"-.-"});
 
   const fetchAlarms = async () => {
     try {
       const response = await axios.get(`${serverUrl}/user/alarms`);
       if (response.status === 200) {
-        const { alarms } = response.data;
+        const { alarms,stats } = response.data;
         setAlarms(alarms);
+        setStats(stats);
       } else if (response.status === 401) {
         // Handle unauthorized response
         console.error('Unauthorized access. Redirecting to login...');
@@ -97,12 +99,15 @@ const Dashboard = () => {
               />
             ))}
           </div>
-          <div className="justify-center items-center flex flex-col space-y-2 py-20">
+          <div className="justify-center items-center flex flex-col py-10">
+            <button className="border border-gray-200 text-gray-400 px-10 pt-1 pb-2 rounded-xl hover:bg-gray-100/10 hover:shadow-lg transition duration-200"><span className="text-2xl">+</span> Add Alarm</button>
+          </div>
+          <div className="justify-center items-center flex flex-col space-y-2 py-10">
             <h1 className="font-bold text-4xl">Weekly Stats</h1>
-            <div className="justify-center items-center flex flex-wrap space-x-10 py-10">
-              <StatCard title={"Average WakeUp Time"} value={"20s"} icon={<IoMdAlarm size={40}/>}/>
-              <StatCard title={"Weekly WakeUp Score"} value={"7/8"} icon={<FaDatabase size={35}/>}/>
-              <StatCard title={"Average Sleep Time"} value={"6h 23m"} icon={<FaBed size={40}/>}/>
+            <div className="justify-center items-center flex flex-wrap flex-row space-x-10 py-10">
+              <StatCard title={"Average WakeUp Time"} value={stats?.wakeUpTime} icon={<IoMdAlarm size={40}/>}/>
+              <StatCard title={"Weekly WakeUp Score"} value={stats?.wakeUpScore} icon={<FaDatabase size={35}/>}/>
+              <StatCard title={"Average Sleep Time"} value={stats?.sleepTime} icon={<FaBed size={40}/>}/>
             </div>
           </div>
         </div>
