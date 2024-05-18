@@ -6,6 +6,9 @@ import SleepCard from "./SleepCard";
 import Graph from "./Graph";
 import AddAlarm  from "./AddAlarm";
 import GraphWeight from "./GraphWeight";
+import EditAlarm from "./EditAlarm";
+import DeleteAlarm from "./DeleteAlarm";
 
 
-export { Navbar, ProfileCard, AlarmCard, StatCard ,SleepCard , Graph , GraphWeight,AddAlarm};
+
+export { Navbar, ProfileCard, AlarmCard, StatCard ,SleepCard , Graph , GraphWeight,AddAlarm ,EditAlarm,DeleteAlarm};

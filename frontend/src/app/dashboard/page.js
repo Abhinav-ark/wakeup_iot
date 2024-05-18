@@ -6,9 +6,13 @@ import { Navbar } from "@/app/_components";
 import { AlarmCard } from "@/app/_components";
 import { StatCard } from "@/app/_components";
 import { AddAlarm } from "@/app/_components";
+import { EditAlarm } from "@/app/_components";
+import { DeleteAlarm } from "@/app/_components"; // Import DeleteAlarm
 import { IoMdAlarm } from "react-icons/io";
 import { FaDatabase } from "react-icons/fa";
 import { FaBed } from "react-icons/fa";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 axios.defaults.withCredentials = true;
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -18,8 +22,10 @@ const Dashboard = () => {
 
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
-
   const [addAlarmModal, setAddAlarmModal] = useState(false);
+  const [editAlarmModal, setEditAlarmModal] = useState(false);
+  const [deleteAlarmModal, setDeleteAlarmModal] = useState(false);
+  const [selectedAlarm, setSelectedAlarm] = useState(null); // State to hold the selected alarm
 
   function formatDateToIST(date) {
     const options = {
@@ -28,7 +34,7 @@ const Dashboard = () => {
       month: 'long',
       day: 'numeric'
     };
-  
+
     return new Intl.DateTimeFormat('en-IN', options).format(date);
   }
 
@@ -38,7 +44,7 @@ const Dashboard = () => {
       hour: 'numeric',
       minute: 'numeric',
     };
-  
+
     return new Intl.DateTimeFormat('en-IN', options).format(date);
   }
 
@@ -48,14 +54,14 @@ const Dashboard = () => {
     }
   }, [loggedIn, checkLoginState]);
 
-  const [alarm, setAlarms] = useState([]);
-  const [stats, setStats] = useState({"wakeUpTime":"-.-","wakeUpScore":"-.-","sleepTime":"-.-"});
+  const [alarms, setAlarms] = useState([]);
+  const [stats, setStats] = useState({ "wakeUpTime": "-.-", "wakeUpScore": "-.-", "sleepTime": "-.-" });
 
   const fetchAlarms = async () => {
     try {
       const response = await axios.get(`${serverUrl}/user/alarms`);
       if (response.status === 200) {
-        const { alarms,stats } = response.data;
+        const { alarms, stats } = response.data;
         setAlarms(alarms);
         setStats(stats);
       } else if (response.status === 401) {
@@ -72,9 +78,9 @@ const Dashboard = () => {
         console.error('Unauthorized access. Redirecting to login...');
         // Example: Redirect to login page
         window.location.href = '/';
+      }
     }
-  }
-};
+  };
 
   useEffect(() => {
     if (loggedIn === true) {
@@ -86,6 +92,16 @@ const Dashboard = () => {
     fetchAlarms();
   }, []);
 
+  const handleEdit = (alarm) => {
+    setSelectedAlarm(alarm);
+    setEditAlarmModal(true);
+  };
+
+  const handleDelete = (alarm) => {
+    setSelectedAlarm(alarm);
+    setDeleteAlarmModal(true);
+  };
+
   return (
     <div>
       <Navbar user={user} />
@@ -96,19 +112,40 @@ const Dashboard = () => {
             <h2 className="text-md">Start your day right with our wake-up routine tracker!</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 max-w-[95vw] mx-auto">
-            {alarm.map((alarm, idx) => (
+            {alarms.map((alarm, idx) => (
               <AlarmCard
                 key={idx}
                 time={formatTimeToIST(alarm?.time)}
                 desc={alarm?.desc}
                 date={formatDateToIST(alarm?.time)}
+                onEdit={() => handleEdit(alarm)} // Pass the alarm to handleEdit
+                onDelete={() => handleDelete(alarm)} // Pass the alarm to handleDelete
               />
             ))}
           </div>
           <div className="justify-center items-center flex flex-col py-10">
-            <button onClick={()=>(setAddAlarmModal(true))} className="border border-gray-200 text-gray-400 px-10 pt-1 pb-2 rounded-xl hover:bg-gray-100/10 hover:shadow-lg transition duration-200"><span className="text-2xl">+</span> Add Alarm</button>
+            <button onClick={() => setAddAlarmModal(true)} className="border border-gray-200 text-gray-400 px-10 pt-1 pb-2 rounded-xl hover:bg-gray-100/10 hover:shadow-lg transition duration-200"><span className="text-2xl">+</span> Add Alarm</button>
           </div>
           <AddAlarm setAddAlarmModal={setAddAlarmModal} addAlarmModal={addAlarmModal} setErrorOpen={setErrorOpen} setSuccessOpen={setSuccessOpen}/>
+          {selectedAlarm && (
+            <EditAlarm
+              setEditAlarmModal={setEditAlarmModal}
+              editAlarmModal={editAlarmModal}
+              setErrorOpen={setErrorOpen}
+              setSuccessOpen={setSuccessOpen}
+              alarm={selectedAlarm}
+            />
+          )}
+          {selectedAlarm && (
+            <DeleteAlarm
+              setDeleteAlarmModal={setDeleteAlarmModal}
+              deleteAlarmModal={deleteAlarmModal}
+              setErrorOpen={setErrorOpen}
+              setSuccessOpen={setSuccessOpen}
+              alarm={selectedAlarm}
+              fetchAlarms={fetchAlarms}
+            />
+          )}
           <div className="justify-center items-center flex flex-col space-y-2 py-10">
             <h1 className="font-bold text-4xl">Weekly Stats</h1>
             <div className="justify-center items-center flex flex-wrap flex-row space-x-10 py-10">
@@ -119,8 +156,10 @@ const Dashboard = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-row items-center justify-center w-[100%] h-[80vh]">
-          <p className="mx-auto my-auto text-3xl font-semibold">Please log in to view this page.</p>
+        <div className="flex flex-row items-center justify-center h-[100vh]">
+          <div className="my-auto">
+            <CircularProgress size={60} color="inherit"/>
+          </div>
         </div>
       )}
     </div>
