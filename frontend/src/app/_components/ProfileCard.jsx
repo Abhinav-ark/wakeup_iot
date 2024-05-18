@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { FaPowerOff } from "react-icons/fa6";
-import Link from "next/link";
+
 
 const ProfileCard = ({ member }) => {
   const [isArrowMenuOpen, setIsArrowMenuOpen] = useState(false);
@@ -81,7 +81,7 @@ const ProfileCard = ({ member }) => {
             </Typography>
           </MenuItem>
           <MenuItem
-            className="group flex items-center justify-center gap-3 rounded hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+            className="group flex items-center justify-center gap-3 my-2 py-1 rounded hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
             onClick={handleLogOut}
           >
             {createElement(FaPowerOff, {

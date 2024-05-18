@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/_context";
 import { FcGoogle } from "react-icons/fc";
 import { FaClock } from "react-icons/fa6";
-import '../app/page.css';
 
 axios.defaults.withCredentials = true;
 

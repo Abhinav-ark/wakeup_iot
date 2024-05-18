@@ -54,7 +54,11 @@ const auth = (req, res, next) => {
     try {
       const token = req.cookies.token
       if (!token) return res.status(401).json({ message: 'Unauthorized' })
-      jwt.verify(token, config.tokenSecret)
+      const decoded = jwt.verify(token, config.tokenSecret);
+      if (!req.body) {
+        req.body = {};
+      }
+      req.body["userEmail"] = decoded.user.email;
       return next()
     } catch (err) {
       console.error('Error: ', err)
@@ -62,13 +66,13 @@ const auth = (req, res, next) => {
     }
 }
 
-app.get('/auth/url', (_, res) => {
+app.get('/api/auth/url', (_, res) => {
     res.json({
       url: `${config.authUrl}?${authParams}`,
     })
 })
 
-app.get('/auth/token', async (req, res) => {
+app.get('/api/auth/token', async (req, res) => {
     const { code } = req.query
     if (!code) return res.status(400).json({ message: 'Authorization code must be provided' })
     try {
@@ -98,7 +102,7 @@ app.get('/auth/token', async (req, res) => {
 
 
 
-app.get('/auth/logged_in', (req, res) => {
+app.get('/api/auth/logged_in', (req, res) => {
     try {
       // Get token from cookie
       const token = req.cookies.token
@@ -113,13 +117,14 @@ app.get('/auth/logged_in', (req, res) => {
     }
 })
 
-app.post('/auth/logout', (_, res) => {
+app.post('/api/auth/logout', (_, res) => {
     // clear cookie
     res.clearCookie('token').json({ message: 'Logged out' })
 })
 
-app.get('/user/alarms', auth, async (_, res) => {
+app.get('/api/user/alarms', auth, (req, res) => {
     try {
+      console.log('User email: ', req.body.userEmail)
       const data = [{alarmId:1, time: Date.now(), desc: 'Alarm 1'}, {alarmId:2, time: Date.now(), desc: 'Alarm 2'} ,{alarmId:3, time: Date.now(), desc: 'Meeting with SwamiJi in AB3'} , {alarmId:4, time: Date.now(), desc: 'Meeting with SwamiJi in AB3 summa epdi uruka nalla irukoiya ok varen'}]
       res.json({alarms: data})
     } catch (err) {

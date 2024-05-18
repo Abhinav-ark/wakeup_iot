@@ -3,7 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "@/app/_context";
 import { Navbar } from "@/app/_components";
-import AlarmCard from "@/app/_components/AlarmCard";
+import { AlarmCard } from "@/app/_components";
+import { StatCard } from "@/app/_components";
+import { IoMdAlarm } from "react-icons/io";
+import { FaDatabase } from "react-icons/fa";
+import { FaBed } from "react-icons/fa";
 
 axios.defaults.withCredentials = true;
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -92,6 +96,14 @@ const Dashboard = () => {
                 date={formatDateToIST(alarm?.time)}
               />
             ))}
+          </div>
+          <div className="justify-center items-center flex flex-col space-y-2 py-20">
+            <h1 className="font-bold text-4xl">Weekly Stats</h1>
+            <div className="justify-center items-center flex flex-wrap space-x-10 py-10">
+              <StatCard title={"Average WakeUp Time"} value={"20s"} icon={<IoMdAlarm/>}/>
+              <StatCard title={"Weekly WakeUp Score"} value={"7/8"} icon={<FaDatabase/>}/>
+              <StatCard title={"Average Sleep Time"} value={"6h 23m"} icon={<FaBed/>}/>
+            </div>
           </div>
         </div>
       ) : (

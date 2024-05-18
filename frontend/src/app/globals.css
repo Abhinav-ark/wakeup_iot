@@ -22,17 +22,70 @@
   }
 } */
 
-.btn {
-  border-radius: 100rem;
-  padding: 12px 16px;
-  background: linear-gradient(170deg, #61dbfb, #2e849b) !important;
-  width: 10rem;
-  border: none;
-  color: white;
-  font-weight: 600;
-  margin: 1rem 0;
-  cursor: pointer;
+/* Custom utility class for wrapping text without breaking words */
+.wrap-text {
+  display: block;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 300px; /* Adjust the width as needed to control text wrapping */
 }
+
+/* Static background */
+.bg-static {
+  background-color: white;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+.stars {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.stars span {
+  position: absolute;
+  display: block;
+  width: 3px;
+  height: 3px;
+  background: black;
+  box-shadow: 0 0 10px black;
+  border-radius: 50%;
+  animation: twinkle 2s infinite ease-in-out;
+}
+
+/* Star positions and sizes */
+.stars span:nth-child(1) { top: 10%; left: 15%; width: 4px; height: 4px; animation-duration: 1.5s; }
+.stars span:nth-child(2) { top: 20%; left: 25%; width: 5px; height: 5px; animation-duration: 1.8s; }
+.stars span:nth-child(3) { top: 30%; left: 35%; width: 3px; height: 3px; animation-duration: 1.2s; }
+.stars span:nth-child(4) { top: 40%; left: 45%; width: 4px; height: 4px; animation-duration: 2s; }
+.stars span:nth-child(5) { top: 50%; left: 55%; width: 5px; height: 5px; animation-duration: 2.5s; }
+.stars span:nth-child(6) { top: 60%; left: 65%; width: 3px; height: 3px; animation-duration: 1.7s; }
+.stars span:nth-child(7) { top: 70%; left: 75%; width: 4px; height: 4px; animation-duration: 2.3s; }
+.stars span:nth-child(8) { top: 80%; left: 85%; width: 5px; height: 5px; animation-duration: 1.6s; }
+.stars span:nth-child(9) { top: 90%; left: 95%; width: 3px; height: 3px; animation-duration: 2.1s; }
+.stars span:nth-child(10) { top: 15%; left: 50%; width: 4px; height: 4px; animation-duration: 1.9s; }
+.stars span:nth-child(11) { top: 25%; left: 60%; width: 3px; height: 3px; animation-duration: 2s; }
+.stars span:nth-child(12) { top: 35%; left: 70%; width: 4px; height: 4px; animation-duration: 1.4s; }
+.stars span:nth-child(13) { top: 45%; left: 80%; width: 5px; height: 5px; animation-duration: 1.8s; }
+.stars span:nth-child(14) { top: 55%; left: 90%; width: 3px; height: 3px; animation-duration: 2.3s; }
+.stars span:nth-child(15) { top: 65%; left: 20%; width: 4px; height: 4px; animation-duration: 1.7s; }
+.stars span:nth-child(16) { top: 75%; left: 30%; width: 5px; height: 5px; animation-duration: 2.4s; }
+.stars span:nth-child(17) { top: 85%; left: 40%; width: 3px; height: 3px; animation-duration: 2s; }
+.stars span:nth-child(18) { top: 95%; left: 50%; width: 4px; height: 4px; animation-duration: 1.6s; }
+.stars span:nth-child(19) { top: 5%; left: 60%; width: 5px; height: 5px; animation-duration: 1.9s; }
+.stars span:nth-child(20) { top: 15%; left: 70%; width: 3px; height: 3px; animation-duration: 2.2s; }
+/* Add more spans for more stars with different positions and sizes */
+
 
 body {
   color: rgb(var(--foreground-rgb));

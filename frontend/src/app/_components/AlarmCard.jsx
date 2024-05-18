@@ -1,5 +1,4 @@
-import React from "react";
-import './warp.css'; // Make sure this path is correct
+import React from "react"; 
 
 const AlarmCard = ({ time, desc, date }) => {
     return (
