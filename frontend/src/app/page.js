@@ -82,7 +82,9 @@ const Page = () => {
           <FaClock size={45} />
           <span className="text-6xl font-semibold text-shadow-lg">WakeUp</span>
         </div>
-        <span className="text-lg text-gray-600 mb-6">Experience the intelligent wake-up</span>
+        <span className="text-lg text-gray-600 mb-6">
+          Experience the intelligent wake-up
+        </span>
         <button
           className="bg-black text-white py-2 px-4 rounded-full flex items-center space-x-2 hover:bg-gray-800 hover:shadow-lg mt-7"
           onClick={handleLogin}
