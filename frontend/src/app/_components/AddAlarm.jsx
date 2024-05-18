@@ -1,39 +1,37 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
-const AddAlarm = ({
-  setAddAlarmModal,
-  addAlarmModal,
-  setSuccessOpen,
-  setErrorOpen,
-}) => {
-  
+const AddAlarm = ({ setAddAlarmModal, addAlarmModal, setSuccessOpen, setErrorOpen }) => {
   const [alarm, setAlarm] = useState({
     time: 0,
     desc: "",
   });
 
-  const addAlarm = () => {
-    fetch('http://localhost:5000/api/user/createAlarm', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          time: alarm.time,
-          desc: alarm.desc
-        }),
-        credentials: 'include'
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-  }
+  const addAlarm = async () => {
+    try {
+      const response = await axios.post(`${serverUrl}/user/createAlarm`, {
+        time: alarm.time,
+        desc: alarm.desc
+      });
 
+      if (response.status === 200) {
+        setSuccessOpen(true);
+        setTimeout(() => setSuccessOpen(false), 3000); // Hide after 3 seconds
+        setAddAlarmModal(false);
+      } else {
+        setErrorOpen(true);
+        setTimeout(() => setErrorOpen(false), 3000); // Hide after 3 seconds
+      }
+    } catch (error) {
+      setErrorOpen(true);
+      setTimeout(() => setErrorOpen(false), 3000); // Hide after 3 seconds
+      console.error('Error:', error);
+    }
+  };
 
   return addAlarmModal ? (
     <div className="fixed inset-0 overflow-y-auto">
@@ -49,7 +47,7 @@ const AddAlarm = ({
               className="p-2 text-gray-400 rounded-2xl hover:bg-gray-100"
             >
               <svg
-                xmlns="http:www.w3.org/2000/svg"
+                xmlns="http://www.w3.org/2000/svg"
                 className="w-5 h-5 mx-auto"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -63,17 +61,13 @@ const AddAlarm = ({
             </button>
           </div>
           <div className="max-w-sm mx-auto-3 py-3 space-y-3 text-center items-center justify-center mx-auto">
-            <h4 className="text-lg font-medium text-gray-800">
-              Create New Alarm
-            </h4>
+            <h4 className="text-lg font-medium text-gray-800">Create New Alarm</h4>
             <form onSubmit={(e) => e.preventDefault()}>
               <div className="relative mt-3">
                 <input
                   type="datetime-local"
                   placeholder="Alarm Time"
-                  onChange={(e) =>
-                    setAlarm({ ...alarm, time: e.target.value })
-                  }
+                  onChange={(e) => setAlarm({ ...alarm, time: e.target.value })}
                   className="w-full pl-5 pr-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-black shadow-sm rounded-lg"
                 />
               </div>
@@ -82,9 +76,7 @@ const AddAlarm = ({
                   className="w-full pl-5 pr-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-black shadow-sm rounded-lg"
                   name="textarea"
                   placeholder="Description"
-                  onChange={(e) =>
-                    setAlarm({ ...alarm, desc: e.target.value })
-                  }
+                  onChange={(e) => setAlarm({ ...alarm, desc: e.target.value })}
                   rows="2"
                   cols="30"
                 />
@@ -96,7 +88,7 @@ const AddAlarm = ({
                 text-white hover:bg-gray-800 hover:shadow-lg bg-black
                 rounded-lg ring-offset-2 ring-black focus:ring-2"
               >
-                Create Alarm / Remainder
+                Create Alarm / Reminder
               </button>
             </form>
           </div>

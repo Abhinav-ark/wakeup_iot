@@ -68,6 +68,7 @@ app.use(express.json())
   // Verify auth
 const auth = (req, res, next) => {
     try {
+      console.log("bb",req.body);
       const token = req.cookies.token
       if (!token) return res.status(401).json({ message: 'Unauthorized' })
       const decoded = jwt.verify(token, config.tokenSecret);
@@ -185,8 +186,9 @@ app.post('/api/user/editAlarm', auth, async (req, res) => {
   let db_connection = await DB.promise().getConnection();
   try {
     // req.body.userEmail = 'shivajivayilajilebi@gmail.com'
+    console.log(req.body);
     await db_connection.query(`LOCK TABLES alarms WRITE`);
-    await db_connection.query(`UPDATE alarms SET alarmTime = ?, alarmDescription = ? WHERE alarmId = ? AND userEmail = ?`, [Date(req.body.time), req.body.desc, req.body.alarmId, req.body.userEmail]);
+    await db_connection.query(`UPDATE alarms SET alarmTime = ?, alarmDescription = ? WHERE alarmId = ? AND userEmail = ?`, [new Date(req.body.time), req.body.desc, req.body.alarmId, req.body.userEmail]);
     await db_connection.query(`UNLOCK TABLES`);
 
     res.status(200).send({"message":"Alarm Edited Successfully"})

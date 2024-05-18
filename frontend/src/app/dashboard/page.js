@@ -12,7 +12,9 @@ import { IoMdAlarm } from "react-icons/io";
 import { FaDatabase } from "react-icons/fa";
 import { FaBed } from "react-icons/fa";
 import CircularProgress from '@mui/material/CircularProgress';
-
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Collapse from '@mui/material/Collapse';
 
 axios.defaults.withCredentials = true;
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -65,18 +67,14 @@ const Dashboard = () => {
         setAlarms(alarms);
         setStats(stats);
       } else if (response.status === 401) {
-        // Handle unauthorized response
         console.error('Unauthorized access. Redirecting to login...');
-        // Example: Redirect to login page
         window.location.href = '/';
       } else {
         console.error('Unexpected response status:', response.status);
       }
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        // Handle unauthorized error
         console.error('Unauthorized access. Redirecting to login...');
-        // Example: Redirect to login page
         window.location.href = '/';
       }
     }
@@ -91,6 +89,10 @@ const Dashboard = () => {
   useEffect(() => {
     fetchAlarms();
   }, []);
+
+  useEffect(() => {
+    fetchAlarms();
+  }, [successOpen]);
 
   const handleEdit = (alarm) => {
     setSelectedAlarm(alarm);
@@ -152,6 +154,26 @@ const Dashboard = () => {
               <StatCard title={"Average WakeUp Time"} value={stats?.wakeUpTime} icon={<IoMdAlarm size={40}/>}/>
               <StatCard title={"Weekly WakeUp Score"} value={stats?.wakeUpScore} icon={<FaDatabase size={35}/>}/>
               <StatCard title={"Average Sleep Time"} value={stats?.sleepTime} icon={<FaBed size={40}/>}/>
+            </div>
+          </div>
+          <div className={`fixed z-1000 bottom-10 mx-auto items-center justify-center w-full h-30 ${successOpen ? 'flex' : 'hidden'}`}>
+            <div className="">
+              <Collapse in={successOpen}>
+                <Alert severity="success">
+                  <AlertTitle>Success</AlertTitle>
+                  Operation Successfully
+                </Alert>
+              </Collapse>
+            </div>
+          </div>
+          <div className={`fixed z-1000 bottom-10 flex mx-auto items-center justify-center w-full h-30`}>
+            <div className="">
+              <Collapse in={errorOpen}>
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  Operation Failed 
+                </Alert>
+              </Collapse>
             </div>
           </div>
         </div>
