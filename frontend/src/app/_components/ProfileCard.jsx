@@ -56,7 +56,7 @@ const ProfileCard = ({ member }) => {
                 height={50}
               />
             </div>
-            <div className="cursor-pointer">
+            <div className="cursor-pointer p-2">
               {isMenuOpen ? (
                 <FaArrowUp size={10} color="gray" onClick={handlearrowclick} />
               ) : (

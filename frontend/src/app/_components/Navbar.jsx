@@ -16,7 +16,7 @@ const Navbar = ({ user }) => {
         <Link href="/sleep" className="hover:font-bold text-sm">Sleep</Link>
         <Link href="/weight" className="hover:font-bold text-sm">Weight</Link>
       </div>
-      <div className="w-14 h-14 justify-center items-center mx-10">
+      <div className="w-16 justify-center items-center mx-10">
         <ProfileCard member={user} />
       </div>
     </div>

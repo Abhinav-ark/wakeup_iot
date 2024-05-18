@@ -40,6 +40,7 @@ const GraphWeight = ({ title, data, labels, unit, gap , options, defaultOption, 
         <div className="bg-black text-white px-4 py-1 rounded-full text-sm">{badgeText}</div>
         <div className="text-gray-500 text-sm">{additionalInfo}</div>
       </div>
+      <div className="md:h-[390px] md:w-[750px] h-96 w-96 items-center justify-center">
       <LineChart
         yAxis={[{ label: unit }]}
         xAxis={[
@@ -56,11 +57,10 @@ const GraphWeight = ({ title, data, labels, unit, gap , options, defaultOption, 
             color: '#22abe6',
           },
         ]}
-        width={750}
-        height={390}
         grid={{ horizontal: true }}
         borderRadius={20}
       />
+      </div>
     </div>
   );
 };

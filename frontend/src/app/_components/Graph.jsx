@@ -53,6 +53,7 @@ const Graph = ({
           </span>
         </div>
       )}
+      <div className="md:h-[250px] md:w-[600px] h-96 w-96 items-center justify-center">
       <BarChart
         yAxis={[{ label: unit }]}
         xAxis={[
@@ -64,11 +65,10 @@ const Graph = ({
           },
         ]}
         series={[{ data: data, color: "#22abe6" }]}
-        width={570}
-        height={250}
         grid={{ horizontal: true }}
         borderRadius={20}
       />
+      </div>
     </div>
   );
 };
