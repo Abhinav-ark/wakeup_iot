@@ -62,6 +62,8 @@ app.use(
   
 // Parse Cookie
 app.use(cookieParser())
+
+app.use(express.json())
   
   // Verify auth
 const auth = (req, res, next) => {
@@ -69,7 +71,6 @@ const auth = (req, res, next) => {
       const token = req.cookies.token
       if (!token) return res.status(401).json({ message: 'Unauthorized' })
       const decoded = jwt.verify(token, config.tokenSecret);
-      console.log("check",req.body);
       if (!req.body) {
         req.body = {};
       }
@@ -165,10 +166,8 @@ app.get('/api/user/alarms', auth, async (req, res) => {
 app.post('/api/user/createAlarm', auth, async (req, res) => {
   let db_connection = await DB.promise().getConnection();
   try {
-    console.log("new",req.body);
-    // req.body = JSON.parse(req.body);
+    
     await db_connection.query(`LOCK TABLES alarms WRITE`);
-    // const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, [req.body.userEmail]);
     console.log(req.body.time, req.body.desc);
     await db_connection.query(`INSERT INTO alarms (userEmail, alarmTime, alarmDescription) VALUES (?, ?, ?)`, [req.body.userEmail, new Date(req.body.time), req.body.desc]);
     await db_connection.query(`UNLOCK TABLES`);
