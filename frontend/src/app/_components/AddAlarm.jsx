@@ -1,5 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const AddAlarm = ({
   setAddAlarmModal,
@@ -10,12 +14,25 @@ const AddAlarm = ({
   
   const [alarm, setAlarm] = useState({
     time: 0,
-    description: "",
+    desc: "",
   });
 
-  useEffect(() => {
-    console.log(alarm);
-  }, [alarm]);
+  const addAlarm = () => {
+    fetch('http://localhost:5000/api/user/createAlarm', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          time: alarm.time,
+          desc: alarm.desc
+        }),
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+  }
 
 
   return addAlarmModal ? (
@@ -66,7 +83,7 @@ const AddAlarm = ({
                   name="textarea"
                   placeholder="Description"
                   onChange={(e) =>
-                    setAlarm({ ...alarm, description: e.target.value })
+                    setAlarm({ ...alarm, desc: e.target.value })
                   }
                   rows="2"
                   cols="30"
@@ -74,7 +91,7 @@ const AddAlarm = ({
               </div>
 
               <button
-                onClick={() => createItem()}
+                onClick={() => addAlarm()}
                 className="block w-full mt-3 py-3 px-4 font-medium text-sm text-center
                 text-white hover:bg-gray-800 hover:shadow-lg bg-black
                 rounded-lg ring-offset-2 ring-black focus:ring-2"

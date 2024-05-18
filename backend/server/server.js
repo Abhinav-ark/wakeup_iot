@@ -6,6 +6,20 @@ import queryString from 'query-string'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser'
 
+import reInitDatabase from "../schema/reInitDb.js"
+import establishConnection from '../schema/initializeConnection.js'
+
+const db = establishConnection();
+
+const initialize = () => {
+  reInitDatabase(db[0]);
+  console.log("[MESSAGE]: DB Initialized done.");
+}
+
+initialize();
+
+import DB from '../schema/connection.js'
+
 const config = {
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -55,6 +69,7 @@ const auth = (req, res, next) => {
       const token = req.cookies.token
       if (!token) return res.status(401).json({ message: 'Unauthorized' })
       const decoded = jwt.verify(token, config.tokenSecret);
+      console.log("check",req.body);
       if (!req.body) {
         req.body = {};
       }
@@ -122,17 +137,56 @@ app.post('/api/auth/logout', (_, res) => {
     res.clearCookie('token').json({ message: 'Logged out' })
 })
 
-app.get('/api/user/alarms', auth, (req, res) => {
+app.get('/api/user/alarms', auth, async (req, res) => {
+    let db_connection = await DB.promise().getConnection();
     try {
-      console.log('User email: ', req.body.userEmail)
-      const data = [{alarmId:1, time: Date.now(), desc: 'Alarm 1'}, {alarmId:2, time: Date.now(), desc: 'Alarm 2'} ,{alarmId:3, time: Date.now(), desc: 'Meeting with SwamiJi in AB3'} , {alarmId:4, time: Date.now(), desc: 'Cousins Wedding ceremony'}]
+      
+      await db_connection.query(`LOCK TABLES alarms READ`);
+      const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, [req.body.userEmail]);
+      await db_connection.query(`UNLOCK TABLES`);
+
+      // console.log(rows[0].alarmTime, typeof(rows[0].alarmTime));
+      const formattedAlarms = rows.map(alarm => ({
+        alarmId: alarm.alarmID,
+        time: new Date(alarm.alarmTime).getTime(), // or Date.now() if you want current time
+        desc: alarm.alarmDescription
+      }));
+
       const data2 = {wakeUpTime: "10s", wakeUpScore: "8/8", sleepTime: "5h 23m"}
-      res.json({alarms: data, stats: data2})
+
+      res.json({alarms: formattedAlarms, stats: data2})
     } catch (err) {
       console.error('Error: ', err)
+    } finally {
+      db_connection.release();
     }
+})
+
+app.post('/api/user/createAlarm', auth, async (req, res) => {
+  let db_connection = await DB.promise().getConnection();
+  try {
+    console.log("new",req.body);
+    // req.body = JSON.parse(req.body);
+    await db_connection.query(`LOCK TABLES alarms WRITE`);
+    // const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, [req.body.userEmail]);
+    console.log(req.body.time, req.body.desc);
+    await db_connection.query(`INSERT INTO alarms (userEmail, alarmTime, alarmDescription) VALUES (?, ?, ?)`, [req.body.userEmail, new Date(req.body.time), req.body.desc]);
+    await db_connection.query(`UNLOCK TABLES`);
+
+    res.status(200).send({"message":"Alarm created Successfully"})
+  } catch (err) {
+    console.error('Error: ', err)
+  } finally {
+    db_connection.release();
+  }
 })
 
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`))
+app.listen(PORT, (err) => {
+  if (err) {
+      console.log('[ERROR]: Error starting server.');
+  } else {
+      console.log(`[MESSAGE]: 🚀 Server listening on port ${PORT}`);
+  }
+})
