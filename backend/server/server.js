@@ -298,7 +298,7 @@ app.post('/api/user/createAlarm', auth, async (req, res) => {
     await db_connection.query(`LOCK TABLES alarms WRITE`);
     await db_connection.query(`INSERT INTO alarms (userEmail, alarmTime, alarmDescription) VALUES (?, ?, ?)`, [req.body.userEmail, new Date(req.body.time), req.body.desc]);
     await db_connection.query(`UNLOCK TABLES`);
-    await sendMessageToClients();
+    await sendMessageToClients(req.body.userEmail);
     res.status(200).send({"message":"Alarm created Successfully"})
   } catch (err) {
     console.error('Error: ', err)
@@ -316,7 +316,7 @@ app.post('/api/user/editAlarm', auth, async (req, res) => {
     await db_connection.query(`LOCK TABLES alarms WRITE`);
     await db_connection.query(`UPDATE alarms SET alarmTime = ?, alarmDescription = ? WHERE alarmId = ? AND userEmail = ?`, [new Date(req.body.time), req.body.desc, req.body.alarmId, req.body.userEmail]);
     await db_connection.query(`UNLOCK TABLES`);
-
+    await sendMessageToClients(req.body.userEmail);
     res.status(200).send({"message":"Alarm Edited Successfully"})
   } catch (err) {
     console.error('Error: ', err)
@@ -333,7 +333,7 @@ app.post('/api/user/deleteAlarm', auth, async (req, res) => {
     await db_connection.query(`LOCK TABLES alarms WRITE`);
     await db_connection.query(`DELETE FROM alarms WHERE alarmId = ? AND userEmail = ?`, [req.body.alarmId, req.body.userEmail]);
     await db_connection.query(`UNLOCK TABLES`);
-
+    await sendMessageToClients(req.body.userEmail);
     res.status(200).send({"message":"Alarm Deleted Successfully"})
   } catch (err) {
     console.error('Error: ', err)
@@ -376,12 +376,12 @@ wss.on("connection", (ws) => {
 
 console.log("WebSocket server is running on ws://localhost:8000");
 
-const sendMessageToClients = async () => {
+const sendMessageToClients = async (userEmail) => {
   let formattedAlarms = [];
   let db_connection = await DB.promise().getConnection();
   try {
     await db_connection.query(`LOCK TABLES alarms READ`);
-    const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, [process.env.DEVICE_USER_EMAIL]);
+    const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, [userEmail]);
     await db_connection.query(`UNLOCK TABLES`);
 
     formattedAlarms = rows.map(alarm => {

@@ -35,7 +35,7 @@
 
 <script>
   const messagesDiv = document.getElementById('messages');
-  const ws = new WebSocket('ws://localhost:8000/ws');
+  const ws = new WebSocket('ws://wakeup.abhinavramakrishnan.tech:8000/ws');
 
   ws.onopen = () => {
     console.log('Connected to WebSocket server');
