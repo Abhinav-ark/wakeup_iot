@@ -5,6 +5,7 @@ import { AuthContext } from "@/app/_context";
 import { Navbar } from "@/app/_components";
 import { AlarmCard } from "@/app/_components";
 import { StatCard } from "@/app/_components";
+import { AddAlarm } from "@/app/_components";
 import { IoMdAlarm } from "react-icons/io";
 import { FaDatabase } from "react-icons/fa";
 import { FaBed } from "react-icons/fa";
@@ -14,6 +15,11 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const Dashboard = () => {
   const { user, loggedIn, checkLoginState } = useContext(AuthContext);
+
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
+
+  const [addAlarmModal, setAddAlarmModal] = useState(false);
 
   function formatDateToIST(date) {
     const options = {
@@ -100,8 +106,9 @@ const Dashboard = () => {
             ))}
           </div>
           <div className="justify-center items-center flex flex-col py-10">
-            <button className="border border-gray-200 text-gray-400 px-10 pt-1 pb-2 rounded-xl hover:bg-gray-100/10 hover:shadow-lg transition duration-200"><span className="text-2xl">+</span> Add Alarm</button>
+            <button onClick={()=>(setAddAlarmModal(true))} className="border border-gray-200 text-gray-400 px-10 pt-1 pb-2 rounded-xl hover:bg-gray-100/10 hover:shadow-lg transition duration-200"><span className="text-2xl">+</span> Add Alarm</button>
           </div>
+          <AddAlarm setAddAlarmModal={setAddAlarmModal} addAlarmModal={addAlarmModal} setErrorOpen={setErrorOpen} setSuccessOpen={setSuccessOpen}/>
           <div className="justify-center items-center flex flex-col space-y-2 py-10">
             <h1 className="font-bold text-4xl">Weekly Stats</h1>
             <div className="justify-center items-center flex flex-wrap flex-row space-x-10 py-10">

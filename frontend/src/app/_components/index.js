@@ -4,5 +4,6 @@ import AlarmCard from "./AlarmCard";
 import StatCard from "./StatCard";
 import SleepCard from "./SleepCard";
 import Graph from "./Graph";
+import AddAlarm  from "./AddAlarm";
 
-export { Navbar, ProfileCard, AlarmCard, StatCard ,SleepCard , Graph};
+export { Navbar, ProfileCard, AlarmCard, StatCard ,SleepCard , Graph, AddAlarm};
