@@ -7,6 +7,7 @@ import queryString from 'query-string'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser'
 import {WebSocketServer} from 'ws'
+import http from 'http'
 
 // const WebSocketServer = require("ws").Server;
 
@@ -354,8 +355,10 @@ app.listen(PORT, (err) => {
 
 })
 
-// Example of setting up a WebSocket server
-const wss = new WebSocketServer({ port: 8000 });
+const server = http.createServer(app);
+
+// Set up a WebSocket server on a specific path
+const wss = new WebSocketServer({ noServer: true });
 
 wss.on("connection", (ws) => {
   console.log("New connection established");
@@ -378,7 +381,7 @@ const sendMessageToClients = async () => {
   let db_connection = await DB.promise().getConnection();
   try {
     await db_connection.query(`LOCK TABLES alarms READ`);
-    const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, ['sksseervi@gmail.com']);
+    const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, [process.env.DEVICE_USER_EMAIL]);
     await db_connection.query(`UNLOCK TABLES`);
 
     formattedAlarms = rows.map(alarm => {
@@ -399,5 +402,21 @@ const sendMessageToClients = async () => {
     }
   });
 };
+
+server.on('upgrade', (request, socket, head) => {
+  const pathname = request.url;
+
+  if (pathname === '/ws') {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      wss.emit('connection', ws, request);
+    });
+  } else {
+    socket.destroy();
+  }
+});
+
+server.listen(8000, () => {
+  console.log('HTTP server is running on http://localhost:8000');
+});
 
 
