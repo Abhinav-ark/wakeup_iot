@@ -70,12 +70,12 @@ const ProfileCard = ({ member }) => {
           </Button>
         </MenuHandler>
         <MenuList className="z-40 px-3 py-4 bg-white">
-          <MenuItem className="group flex items-center font-bold gap-3 rounded hover:bg-gray-500/10">
+          <MenuItem className="group flex items-center justify-center font-bold gap-3 rounded hover:bg-gray-500/10">
             <Typography as="span" variant="small" color="gray">
               {member?.name}
             </Typography>
           </MenuItem>
-          <MenuItem className="group flex items-center gap-3 rounded hover:bg-gray-500/10">
+          <MenuItem className="group flex items-center justify-center gap-3 rounded hover:bg-gray-500/10">
             <Typography as="span" variant="small" color="gray">
               {member?.email}
             </Typography>

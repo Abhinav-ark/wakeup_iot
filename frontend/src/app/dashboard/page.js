@@ -8,7 +8,7 @@ import AlarmCard from "@/app/_components/AlarmCard";
 axios.defaults.withCredentials = true;
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
-const AnotherPage = () => {
+const Dashboard = () => {
   const { user, loggedIn, checkLoginState } = useContext(AuthContext);
 
   function formatDateToIST(date) {
@@ -40,20 +40,39 @@ const AnotherPage = () => {
 
   const [alarm, setAlarms] = useState([]);
 
+  const fetchAlarms = async () => {
+    try {
+      const response = await axios.get(`${serverUrl}/user/alarms`);
+      if (response.status === 200) {
+        const { alarms } = response.data;
+        setAlarms(alarms);
+      } else if (response.status === 401) {
+        // Handle unauthorized response
+        console.error('Unauthorized access. Redirecting to login...');
+        // Example: Redirect to login page
+        window.location.href = '/';
+      } else {
+        console.error('Unexpected response status:', response.status);
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        // Handle unauthorized error
+        console.error('Unauthorized access. Redirecting to login...');
+        // Example: Redirect to login page
+        window.location.href = '/';
+    }
+  }
+};
+
   useEffect(() => {
     if (loggedIn === true) {
-      (async () => {
-        try {
-          const {
-            data: { alarms },
-          } = await axios.get(`${serverUrl}/user/alarms`);
-          setAlarms(alarms);
-        } catch (err) {
-          console.error(err);
-        }
-      })();
+      fetchAlarms();
     }
   }, [loggedIn]);
+
+  useEffect(() => {
+    fetchAlarms();
+  }, []);
 
   return (
     <div>
@@ -76,10 +95,12 @@ const AnotherPage = () => {
           </div>
         </div>
       ) : (
-        <p>Please log in to view this page.</p>
+        <div className="flex flex-row items-center justify-center w-[100%] h-[80vh]">
+          <p className="mx-auto my-auto text-3xl font-semibold">Please log in to view this page.</p>
+        </div>
       )}
     </div>
   );
 };
 
-export default AnotherPage;
+export default Dashboard;
