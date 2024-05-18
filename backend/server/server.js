@@ -376,25 +376,28 @@ console.log("WebSocket server is running on ws://localhost:8000");
 const sendMessageToClients = async () => {
   let formattedAlarms = [];
   let db_connection = await DB.promise().getConnection();
-    try {
-      
-      await db_connection.query(`LOCK TABLES alarms READ`);
-      const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, ['sksseervi@gmail.com']);
-      await db_connection.query(`UNLOCK TABLES`);
+  try {
+    await db_connection.query(`LOCK TABLES alarms READ`);
+    const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, ['sksseervi@gmail.com']);
+    await db_connection.query(`UNLOCK TABLES`);
 
-      formattedAlarms = rows.map(alarm => ({
-        time: new Date(alarm.alarmTime).getTime(), 
-      }));
-    } catch (err) {
-      console.error('Error: ', err)
-    } finally {
-      db_connection.release();
-    }
+    formattedAlarms = rows.map(alarm => {
+      const alarmTime = new Date(alarm.alarmTime);
+      const istTime = alarmTime.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+      return { time: istTime };
+    });
+  } catch (err) {
+    console.error('Error: ', err);
+  } finally {
+    db_connection.release();
+  }
+
   wss.clients.forEach((client) => {
     if (client.readyState === client.OPEN) {
       client.send(JSON.stringify(formattedAlarms));
-      console.log("Message sent to client" , formattedAlarms);
+      console.log("Message sent to client", formattedAlarms);
     }
   });
 };
+
 
