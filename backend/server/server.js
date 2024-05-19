@@ -296,7 +296,7 @@ app.post('/api/user/createAlarm', auth, async (req, res) => {
   try {
     
     await db_connection.query(`LOCK TABLES alarms WRITE`);
-    await db_connection.query(`INSERT INTO alarms (userEmail, alarmTime, alarmDescription) VALUES (?, ?, ?)`, [req.body.userEmail, new Date(req.body.time), req.body.desc]);
+    await db_connection.query(`INSERT INTO alarms (userEmail, alarmTime, alarmDescription) VALUES (?, ?, ?)`, [req.body.userEmail, req.body.time, req.body.desc]);
     await db_connection.query(`UNLOCK TABLES`);
     await sendMessageToClients(req.body.userEmail);
     res.status(200).send({"message":"Alarm created Successfully"})
