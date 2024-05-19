@@ -314,7 +314,7 @@ app.post('/api/user/editAlarm', auth, async (req, res) => {
     // req.body.userEmail = 'shivajivayilajilebi@gmail.com'
     console.log(req.body);
     await db_connection.query(`LOCK TABLES alarms WRITE`);
-    await db_connection.query(`UPDATE alarms SET alarmTime = ?, alarmDescription = ? WHERE alarmId = ? AND userEmail = ?`, [new Date(req.body.time), req.body.desc, req.body.alarmId, req.body.userEmail]);
+    await db_connection.query(`UPDATE alarms SET alarmTime = ?, alarmDescription = ? WHERE alarmId = ? AND userEmail = ?`, [req.body.time, req.body.desc, req.body.alarmId, req.body.userEmail]);
     await db_connection.query(`UNLOCK TABLES`);
     await sendMessageToClients(req.body.userEmail);
     res.status(200).send({"message":"Alarm Edited Successfully"})
