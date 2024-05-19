@@ -57,11 +57,11 @@ const Dashboard = () => {
       return "Invalid Time";
     }
     const options = {
-      timeZone: 'Asia/Kolkata',
+      timeZone: 'GMT',
       hour: 'numeric',
       minute: 'numeric',
     };
-    return new Intl.DateTimeFormat('en-IN', options).format(date);
+    return new Intl.DateTimeFormat('en-UK', options).format(date);
   }
 
   useEffect(() => {
