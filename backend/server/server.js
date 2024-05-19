@@ -386,7 +386,7 @@ const sendMessageToClients = async (userEmail) => {
 
     formattedAlarms = rows.map(alarm => {
       const alarmTime = new Date(alarm.alarmTime);
-      const istTime = alarmTime.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+      const istTime = alarmTime.toLocaleString('en-UK', { timeZone: 'GMT' });
       return { time: istTime };
     });
   } catch (err) {

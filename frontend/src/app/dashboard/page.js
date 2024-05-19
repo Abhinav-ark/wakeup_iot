@@ -43,7 +43,7 @@ const Dashboard = () => {
       return "Invalid Date";
     }
     const options = {
-      timeZone: 'Asia/Kolkata',
+      timeZone: 'GMT',
       year: 'numeric',
       month: 'long',
       day: 'numeric'
