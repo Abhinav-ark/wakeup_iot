@@ -1,5 +1,16 @@
 # WakeUp IOT Smart Alarm, Weight and Sleep Monitoring
 
+<div align="center">
+    <img src="./Assets/Labelled_image.jpeg" width="800px">
+</div>
+
+A cloud based smart alarm clock using IoT sensors. This system aims to integrate various hardware and software components to provide an efficient and user-friendly alarm clock that leverages cloud connectivity for enhanced functionality. The main goals were to improve user experience, enable advanced features like smart weight tracking and provide valuable insights into sleep patterns.
+
+## UI Screens
+
+
+
+
 ## Libraries needed for ESP32 main.ino file
 
 | Name | URL |
@@ -15,3 +26,4 @@
 | NTPClient | https://github.com/arduino-libraries/NTPClient |
 | Time | http://playground.arduino.cc/Code/Time/ |
 | Adafruit_GFX | https://github.com/adafruit/Adafruit-GFX-Library |
+
