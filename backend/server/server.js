@@ -11,18 +11,6 @@ import http from 'http'
 
 // const WebSocketServer = require("ws").Server;
 
-import reInitDatabase from "../schema/reInitDb.js"
-import establishConnection from '../schema/initializeConnection.js'
-
-const db = establishConnection();
-
-const initialize = () => {
-  reInitDatabase(db[0]);
-  console.log("[MESSAGE]: DB Initialized done.");
-}
-
-initialize();
-
 import DB from '../schema/connection.js'
 
 const config = {
