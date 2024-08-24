@@ -1,15 +1,35 @@
 # WakeUp IOT Smart Alarm, Weight and Sleep Monitoring
 
 <div align="center">
-    <img src="./Assets/Labelled_image.jpeg" width="800px">
+    <img src="./Assets/Labelled_image.jpeg" width="600px">
 </div>
+<br>
 
 A cloud based smart alarm clock using IoT sensors. This system aims to integrate various hardware and software components to provide an efficient and user-friendly alarm clock that leverages cloud connectivity for enhanced functionality. The main goals were to improve user experience, enable advanced features like smart weight tracking and provide valuable insights into sleep patterns.
 
 ## UI Screens
+https://github.com/user-attachments/assets/1fc1a6ed-43d6-4194-8b75-5fb851d9eb4a
 
+## Data Flow
+<div align="center">
+    <img src="./Assets/architecture.jpeg" width="600px">
+</div>
 
+1. `ESP32` Microcontroller connects to WebApplication Server `websocket`, gets alarm data in realTime
+2. During NightTime, User Weight and Movement data from TOF, Ultrasound and HX711 Weight Sensors are sent to `InfluxDB` via `Telegraf`, `HiveMQ`.
+3. Live real time monitoring of data and database data are available through the cloud `Grafana` dashboard
+4. Data from `InfluxDB` is read by `AWS Sage Maker` for model based data Analytics using Machine Learning Models
+5. All User Alarms and Aggregated Statistics are stored in `MYSQL Database` in `Azure`.
+6. NextJS Frontend Server and NodeJS(ExpressJS) Backend Server are passed through a reverse proxy for user Abstraction and Security.
+7. `Google OAuth 2.0` with `JSON Web Token` is implemented for authenticating users.
 
+## IOT System Design
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/b77a345a-c80c-429a-914a-e2adacbb22d0" width="600px">
+</div>
+
+## Demo
+https://github.com/user-attachments/assets/0b9d8c76-09d8-47bc-ae6c-5a132773f79e
 
 ## Libraries needed for ESP32 main.ino file
 
