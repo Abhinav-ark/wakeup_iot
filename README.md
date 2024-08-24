@@ -23,6 +23,8 @@ https://github.com/user-attachments/assets/1fc1a6ed-43d6-4194-8b75-5fb851d9eb4a
 6. NextJS Frontend Server and NodeJS(ExpressJS) Backend Server are passed through a reverse proxy for user Abstraction and Security.
 7. `Google OAuth 2.0` with `JSON Web Token` is implemented for authenticating users.
 
+https://github.com/user-attachments/assets/c124c573-dad5-4181-9e5f-c7c184a81f08
+
 ## IOT System Design
 <div align="center">
     <img src="https://github.com/user-attachments/assets/b77a345a-c80c-429a-914a-e2adacbb22d0" width="600px">
@@ -30,6 +32,10 @@ https://github.com/user-attachments/assets/1fc1a6ed-43d6-4194-8b75-5fb851d9eb4a
 
 ## Demo
 https://github.com/user-attachments/assets/0b9d8c76-09d8-47bc-ae6c-5a132773f79e
+
+## Analytics
+
+https://github.com/user-attachments/assets/05f6a328-7e01-4265-a6ba-704ec8b60719
 
 ## Libraries needed for ESP32 main.ino file
 
