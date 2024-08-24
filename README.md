@@ -30,6 +30,11 @@ https://github.com/user-attachments/assets/c124c573-dad5-4181-9e5f-c7c184a81f08
     <img src="https://github.com/user-attachments/assets/b77a345a-c80c-429a-914a-e2adacbb22d0" width="600px">
 </div>
 
+## Circuit Diagram
+<div align="center">
+    <img src="./Assets/circuit_diagram.png" width="600px">
+</div>
+
 ## Demo
 https://github.com/user-attachments/assets/0b9d8c76-09d8-47bc-ae6c-5a132773f79e
 
