@@ -146,61 +146,49 @@ app.post('/api/auth/logout', (_, res) => {
 
 
 app.get('/api/user/sleep', auth,async (req, res) => {
-  let data = {
-      totalSleepTime:"",
-      deepSleepTime:"",
-      outOfBedDayX:[],
-      outOfBedDayY:[],
-      outOfBedWeekX:[],
-      outOfBedWeekY:[],
-      sleepQualityX:[],
-      sleepQualityY:[],
-      secret:false
-  }
-  if (req.body.userEmail === 'abhinavramki2@gmail.com') {
-    data = {
-      totalSleepTime:"4h 18m",
-      deepSleepTime:"2h 26m",
-      outOfBedDayX:["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      outOfBedDayY:[2, 1, 3, 1, 0, 0],
-      outOfBedWeekX:["Week 1", "Week 2", "Week 3"],
-      outOfBedWeekY:[2, 8, 7],
-      sleepQualityX:["April","May"],
-      sleepQualityY:[8.1,6.2],
-      secret:true
+  let db_connection = await DB.promise().getConnection();
+  try{
+    let data = {
+        totalSleepTime:"",
+        deepSleepTime:"",
+        outOfBedDayX:[],
+        outOfBedDayY:[],
+        outOfBedWeekX:[],
+        outOfBedWeekY:[],
+        sleepQualityX:[],
+        sleepQualityY:[],
+        secret:false
     }
-  }
-  else if (req.body.userEmail === 'hariharan.14107@gmail.com'){
-    data = {
-      totalSleepTime:"5h 36m",
-      deepSleepTime:"4h 21m",
-      outOfBedDayX:["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      outOfBedDayY:[1, 1, 4, 0, 2, 1],
-      outOfBedWeekX:["Week 1", "Week 2", "Week 3"],
-      outOfBedWeekY:[8, 5, 9],
-      sleepQualityX:["April","May"],
-      sleepQualityY:[7.8,7.2],
-      secret:true
-    }
-  }
-  else if (req.body.userEmail === 'sksseervi@gmail.com'){
-    data = {
-      totalSleepTime:"5h 36m",
-      deepSleepTime:"4h 21m",
-      outOfBedDayX:["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      outOfBedDayY:[1, 1, 4, 0, 2, 1],
-      outOfBedWeekX:["Week 1", "Week 2", "Week 3"],
-      outOfBedWeekY:[8, 5, 9],
-      sleepQualityX:["April","May"],
-      sleepQualityY:[7.8,7.2],
-      secret:true
-    }
-  }
     
-  res.json(data)    
+    await db_connection.query(`LOCK TABLES sleepData READ`);
+    const [rows] = await db_connection.query(`SELECT * FROM sleepData WHERE userEmail = ?`, [req.body.userEmail]);
+    await db_connection.query(`UNLOCK TABLES`);
+
+    data = rows.map(sleep => ({
+      totalSleepTime: sleep.totalSleepTime,
+      deepSleepTime: sleep.deepSleepTime,
+      outOfBedDayX: sleep.outOfBedDayX,
+      outOfBedDayY: sleep.outOfBedDayY,
+      outOfBedWeekX: sleep.outOfBedWeekX,
+      outOfBedWeekY: sleep.outOfBedWeekY,
+      sleepQualityX: sleep.sleepQualityX,
+      sleepQualityY: sleep.sleepQualityY,
+      secret:true
+    }));
+
+    res.json(data) 
+  } catch (err) {
+    console.error('Error: ', err)
+    res.status(500).send({"message":"Error fetching sleep data"})
+  }
+  finally {
+    db_connection.release();
+  }   
 })
 
 app.get('/api/user/weight',auth, async (req, res) => {
+  try {
+    let db_connection = await DB.promise().getConnection();
     let data = {
       weightCurrent: 0,
       weightPrevious: 0,
@@ -210,40 +198,26 @@ app.get('/api/user/weight',auth, async (req, res) => {
       monthY:[],
       secret:false
     }
-    if (req.body.userEmail === 'abhinavramki2@gmail.com') {
-      data = {
-        weightCurrent: 52.1,
-        weightPrevious: 53.8,
-        weekX:["Apr-Week3","Apr-Week4","May-Week1","May-Week2","May-Week3"],
-        weekY:[53.9,53.8,52.7,52.7,52.1],
-        monthX:["April","May"],
-        monthY:[53.85,52.5],
-        secret:true
-      }
-    } else if (req.body.userEmail === 'hariharan.14107@gmail.com'){
-      data = {
-        weightCurrent: 56.1,
-        weightPrevious: 55.8,
-        weekX:["Apr-Week3","Apr-Week4","May-Week1","May-Week2","May-Week3"],
-        weekY:[55.9,56.1,56.0,56.2,56.1],
-        monthX:["April","May"],
-        monthY:[56.0,56.1],
-        secret:true
-      }
-    }
-    else if (req.body.userEmail === 'sksseervi@gmail.com'){
-      data = {
-        weightCurrent: 56.1,
-        weightPrevious: 55.8,
-        weekX:["Apr-Week3","Apr-Week4","May-Week1","May-Week2","May-Week3"],
-        weekY:[55.9,56.1,56.0,56.2,56.1],
-        monthX:["April","May"],
-        monthY:[56.0,56.1],
-        secret:true
-      }
-    }
-    
-    res.json(data)    
+    await db_connection.query(`LOCK TABLES weightData READ`);
+    const [rows] = await db_connection.query(`SELECT * FROM weightData WHERE userEmail = ?`, [req.body.userEmail]);
+    await db_connection.query(`UNLOCK TABLES`);
+
+    data = rows.map(weight => ({
+      weightCurrent: weight.weightCurrent,
+      weightPrevious: weight.weightPrevious,
+      weekX: weight.weekX,
+      weekY: weight.weekY,
+      monthX: weight.monthX,
+      monthY: weight.monthY,
+      secret:true
+    }));
+
+    res.json(data)
+  } catch (err) {
+    console.error('Error: ', err)
+    res.status(500).send({"message":"Error fetching weight data"})
+  }
+   
 })
 
 
@@ -255,7 +229,6 @@ app.get('/api/user/alarms', auth, async (req, res) => {
       const [rows] = await db_connection.query(`SELECT * FROM alarms WHERE userEmail = ?`, [req.body.userEmail]);
       await db_connection.query(`UNLOCK TABLES`);
 
-      // console.log(rows[0].alarmTime, typeof(rows[0].alarmTime));
       const formattedAlarms = rows.map(alarm => ({
         alarmId: alarm.alarmID,
         time: new Date(alarm.alarmTime).getTime(), // or Date.now() if you want current time
@@ -267,20 +240,17 @@ app.get('/api/user/alarms', auth, async (req, res) => {
         wakeUpScore: null,
         sleepTime: null
       }
-      if (req.body.userEmail === 'abhinavramki2@gmail.com') {
+      await db_connection.query(`LOCK TABLES sleepData READ`);
+      const [rows2] = await db_connection.query(`SELECT * FROM sleepData WHERE userEmail = ?`, [req.body.userEmail]);
+      await db_connection.query(`UNLOCK TABLES`);
+
+      if(rows2.length > 0){
         data2 = {
-          wakeUpTime: "10s",
-          wakeUpScore: "8/8",
-          sleepTime: "5h 23m"
-        }
-      } else if (req.body.userEmail === 'hariharan.14107@gmail.com'){
-        data2 = {
-          wakeUpTime: "23s",
-          wakeUpScore: "7/8",
-          sleepTime: "7h 36m"
+          wakeUpTime: rows2[0].wakeUpTime,
+          wakeUpScore: rows2[0].wakeUpScore,
+          sleepTime: rows2[0].sleepTime
         }
       }
-      
 
       res.json({alarms: formattedAlarms, stats: data2})
     } catch (err) {
@@ -294,7 +264,6 @@ app.get('/api/user/alarms', auth, async (req, res) => {
 app.post('/api/user/createAlarm', auth, async (req, res) => {
   let db_connection = await DB.promise().getConnection();
   try {
-    
     await db_connection.query(`LOCK TABLES alarms WRITE`);
     await db_connection.query(`INSERT INTO alarms (userEmail, alarmTime, alarmDescription) VALUES (?, ?, ?)`, [req.body.userEmail, req.body.time, req.body.desc]);
     await db_connection.query(`UNLOCK TABLES`);
@@ -311,7 +280,6 @@ app.post('/api/user/createAlarm', auth, async (req, res) => {
 app.post('/api/user/editAlarm', auth, async (req, res) => {
   let db_connection = await DB.promise().getConnection();
   try {
-    // req.body.userEmail = 'shivajivayilajilebi@gmail.com'
     console.log(req.body);
     await db_connection.query(`LOCK TABLES alarms WRITE`);
     await db_connection.query(`UPDATE alarms SET alarmTime = ?, alarmDescription = ? WHERE alarmId = ? AND userEmail = ?`, [req.body.time, req.body.desc, req.body.alarmId, req.body.userEmail]);
@@ -329,7 +297,6 @@ app.post('/api/user/editAlarm', auth, async (req, res) => {
 app.post('/api/user/deleteAlarm', auth, async (req, res) => {
   let db_connection = await DB.promise().getConnection();
   try {
-    //req.body.userEmail = 'shivajivayilajilebi@gmail.com'
     await db_connection.query(`LOCK TABLES alarms WRITE`);
     await db_connection.query(`DELETE FROM alarms WHERE alarmId = ? AND userEmail = ?`, [req.body.alarmId, req.body.userEmail]);
     await db_connection.query(`UNLOCK TABLES`);
