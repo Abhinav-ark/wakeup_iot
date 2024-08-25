@@ -1,3 +1,12 @@
+<div align="left" style="display:flex; align-items: center; justify: center; text-decoration: none ">
+    <a href="https://github.com/Abhinav-ark/smart_alarm_iot/blob/main/LICENSE" target="_blank" rel="noreferrer">
+      <img align='center' src="https://img.shields.io/badge/LICENSE-MIT-green"/>
+    </a>
+    <a href="https://github.com/Abhinav-ark/smart_alarm_iot" target="_blank" rel="noreferrer">
+      <img align='center' src="https://img.shields.io/github/created-at/Abhinav-ark/smart_alarm_iot"/>
+    </a>  
+</div>
+
 # WakeUp IOT Smart Alarm, Weight and Sleep Monitoring
 
 <div align="center">
@@ -15,7 +24,8 @@ A cloud based smart alarm clock using IoT sensors. This system aims to integrate
 
 https://github.com/user-attachments/assets/0b9d8c76-09d8-47bc-ae6c-5a132773f79e
 
-For Demonstration purposes, A 20kg loadcell was used only for the head. However for the actual Project a combination of 4 20 kg load cells were placed under the bed to weigh the whole body.
+> [!IMPORTANT]  
+> For Demonstration purposes, A 20kg loadcell was used only for the head. However for the actual Project a combination of four 20 kg load cells were placed under the bed to weigh the whole body.
 
 ## UI Screens
 https://github.com/user-attachments/assets/1fc1a6ed-43d6-4194-8b75-5fb851d9eb4a
@@ -77,8 +87,10 @@ https://github.com/user-attachments/assets/05f6a328-7e01-4265-a6ba-704ec8b60719
 - Weight monitoring is done by the `loadcell` which is placed under the bed.
 - The tof sensor, `VL53LOX` and Ultrasound sensor `HC-SR04` which is placed near the bed measures the distance of the User moving and tracking the percentage of deep sleep he/she is in.
 - The sleep quality of the user is trained by models to give a precise quality by checking the total time duration of the sleep and the movement the user while sleeping.
-- We have analyzed the data of our sleep of past 30 days from 10.4.2024 to 10.5.2024 and got a precise sleep and weight tracking.
 - For modelling, we have used, `Preprocessing`, `Visualization`, `EDA`, `Linear regression`, `KNN`, `Logistic regression`, `Decision tree`, `Random Forest` and `SVM` for better accuracy and got successful results.
+
+> [!NOTE]
+> We have used our sleep data from *10.4.2024* to *10.5.2024* to train and test the models. 
 
 ## Libraries needed for ESP32 main.ino file
 
