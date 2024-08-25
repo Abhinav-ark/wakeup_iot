@@ -7,6 +7,16 @@
 
 A cloud based smart alarm clock using IoT sensors. This system aims to integrate various hardware and software components to provide an efficient and user-friendly alarm clock that leverages cloud connectivity for enhanced functionality. The main goals were to improve user experience, enable advanced features like smart weight tracking and provide valuable insights into sleep patterns.
 
+## Demonstration
+- This alarm system is designed to help you stay on top of your meetings.
+- You input all your meetings into the app, and the hardware detects if you're still in bed before a meeting starts.
+- If you're in bed 5 minutes before a scheduled meeting, the alarm will ring continuously until you get up.
+- The alarm detects your presence by measuring an increase in weight through a load cell and a decrease in distance using a TOF and ultrasound sensor.
+
+https://github.com/user-attachments/assets/0b9d8c76-09d8-47bc-ae6c-5a132773f79e
+
+For Demonstration purposes, A 20kg loadcell was used only for the head. However for the actual Project a combination of 4 20 kg load cells were placed under the bed to weigh the whole body.
+
 ## UI Screens
 https://github.com/user-attachments/assets/1fc1a6ed-43d6-4194-8b75-5fb851d9eb4a
 
@@ -34,9 +44,6 @@ https://github.com/user-attachments/assets/c124c573-dad5-4181-9e5f-c7c184a81f08
 <div align="center">
     <img src="./Assets/circuit_diagram.png" width="600px">
 </div>
-
-## Demo
-https://github.com/user-attachments/assets/0b9d8c76-09d8-47bc-ae6c-5a132773f79e
 
 ## Analytics
 
