@@ -121,3 +121,18 @@ https://github.com/user-attachments/assets/05f6a328-7e01-4265-a6ba-704ec8b60719
 | Time | http://playground.arduino.cc/Code/Time/ |
 | Adafruit_GFX | https://github.com/adafruit/Adafruit-GFX-Library |
 
+## ENV Variables
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/6b0be12c-3b14-4b0e-96b2-ab089a2804fb" width="600px">
+    <img src="https://github.com/user-attachments/assets/c2656572-1e5d-4897-8b9c-f48086b0f5dc" width="600px">
+</div>
+
+## Contributing
+Refer to The [Code of Conduct]() before making a pull request to the repository, posting on the discussions section or involing in any public activity related to this repository.
+
+## Security Policy
+Refer [SECURITY.md](https://github.com/Abhinav-ark/wakeup_iot/blob/main/SECURITY.md) for Security Policy.
+
+## Licensing
+All code in this repository is Licensed Under [MIT License](https://github.com/Abhinav-ark/wakeup_iot/blob/main/LICENSE), and is freely available for anyone to use or make changes.
+
