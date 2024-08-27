@@ -23,7 +23,7 @@ A cloud based smart alarm clock using IoT sensors. This system aims to integrate
 - [x] Sleep Pattern Tracking
 
 
-<div align="center">
+<div align="center" width="600px">
     <h2> Techstack </h2>
     <img src="./Assets/techstack.svg">
     <img src="./Assets/influxdb.svg" height="50px">
