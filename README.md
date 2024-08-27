@@ -14,7 +14,20 @@
 </div>
 <br>
 
-A cloud based smart alarm clock using IoT sensors. This system aims to integrate various hardware and software components to provide an efficient and user-friendly alarm clock that leverages cloud connectivity for enhanced functionality. The main goals were to improve user experience, enable advanced features like smart weight tracking and provide valuable insights into sleep patterns.
+A cloud based smart alarm clock using IoT sensors. This system aims to integrate various hardware and software components to provide an efficient and user-friendly alarm clock that leverages cloud connectivity for enhanced functionality. 
+
+## Features
+- [x] Web based application - set alarm from any device
+- [x] Alarm rings only when necessary. (If user is on his bed around the scheduled time)
+- [x] Smart Weight Tracking
+- [x] Sleep Pattern Tracking
+
+
+<div align="center">
+    <h2> Techstack </h2>
+    <img src="./Assets/techstack.svg">
+    <img src="./Assets/influxdb.svg" height="50px">
+</div>
 
 ## Demonstration
 - This alarm system is designed to help you stay on top of your meetings.
