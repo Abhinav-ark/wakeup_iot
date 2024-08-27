@@ -128,7 +128,7 @@ https://github.com/user-attachments/assets/05f6a328-7e01-4265-a6ba-704ec8b60719
 </div>
 
 ## Contributing
-Refer to The [Code of Conduct]() before making a pull request to the repository, posting on the discussions section or involing in any public activity related to this repository.
+Refer to The [Code of Conduct](https://github.com/Abhinav-ark/wakeup_iot/blob/main/CODE_OF_CONDUCT.md) before making a pull request to the repository, posting on the discussions section or involing in any public activity related to this repository.
 
 ## Security Policy
 Refer [SECURITY.md](https://github.com/Abhinav-ark/wakeup_iot/blob/main/SECURITY.md) for Security Policy.
